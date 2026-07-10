@@ -14,6 +14,7 @@ import net.minecraft.world.level.levelgen.structure.Structure;
 public class RusticTags {
     public static final SharedTag OLIVE_LOGS = createSharedTag("olive_logs");
     public static final SharedTag IRONWOOD_LOGS = createSharedTag("ironwood_logs");
+    public static final TagKey<Item> RENDER_UPRIGHT = createItemTag("render_upright");
 
     public RusticTags() {
     }

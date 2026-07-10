@@ -7,6 +7,7 @@ import io.github.pouffy.rustic.datagen.client.ModLanguageProvider;
 import io.github.pouffy.rustic.datagen.client.ModSoundsProvider;
 import io.github.pouffy.rustic.datagen.server.ModAdvancementProvider;
 import io.github.pouffy.rustic.datagen.server.loot.ModLootGenerator;
+import io.github.pouffy.rustic.datagen.server.recipe.RusticRecipeCollector;
 import io.github.pouffy.rustic.datagen.server.tags.ModBlockTagsProvider;
 import io.github.pouffy.rustic.datagen.server.tags.ModItemTagsProvider;
 import net.minecraft.core.HolderLookup;
@@ -39,6 +40,7 @@ public class ExampleDataGenerator {
 
         AdvancementProvider advancements = new AdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new ModAdvancementProvider()));
         ModLootGenerator lootGenerator = new ModLootGenerator(packOutput, lookupProvider);
+        RusticRecipeCollector recipes = new RusticRecipeCollector(lookupProvider, existingFileHelper, generator, packOutput);
 
         ModSoundsProvider sounds = new ModSoundsProvider(packOutput, existingFileHelper);
         ModLanguageProvider language = new ModLanguageProvider(packOutput, sounds);
@@ -50,6 +52,7 @@ public class ExampleDataGenerator {
 
         generator.addProvider(server, advancements);
         generator.addProvider(server, lootGenerator);
+        recipes.add(server);
 
         generator.addProvider(client, sounds);
         generator.addProvider(client, itemModels);

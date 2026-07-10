@@ -5,6 +5,7 @@ import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefi
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockProperties;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockRegistryHelper;
 import io.github.pouffy.rustic.Rustic;
+import io.github.pouffy.rustic.common.block.CrushingTubBlock;
 import io.github.pouffy.rustic.common.block.LogBlock;
 import io.github.pouffy.rustic.core.block.DoorBlockLootType;
 import io.github.pouffy.rustic.core.block.SlabBlockLootType;
@@ -24,6 +25,8 @@ public class RusticBlocks {
 
     public static final Woodset OLIVE = new Woodset("olive");
     public static final Woodset IRONWOOD = new Woodset("ironwood");
+
+    public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = HELPER.register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion()), BlockProperties.custom(""));
 
     public static void staticInit() {}
 

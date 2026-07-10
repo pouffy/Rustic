@@ -37,5 +37,7 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
                 }
             }
         }
+
+        add("emi.category.rustic.tub_crushing", "Tub Crushing");
     }
 }

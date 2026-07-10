@@ -45,6 +45,7 @@ public class ModBlockStateProvider extends BlockStateProvider {
             justParticle(woodset.hangingSign(), Rustic.location("block/wooden/%s/stripped_log".formatted(name)));
             justParticle(woodset.hangingWallSign(), Rustic.location("block/wooden/%s/stripped_log".formatted(name)));
         }
+        simpleExisting(RusticBlocks.CRUSHING_TUB, Rustic.location("block/crushing_tub"));
     }
 
     private void simpleBlockItem(Supplier<? extends Block> block) {

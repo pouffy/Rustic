@@ -1,4 +1,5 @@
 {
+  "block.rustic.crushing_tub": "Crushing Tub",
   "block.rustic.ironwood_button": "Ironwood Button",
   "block.rustic.ironwood_door": "Ironwood Door",
   "block.rustic.ironwood_fence": "Ironwood Fence",
@@ -29,5 +30,6 @@
   "block.rustic.stripped_ironwood_wood": "Stripped Ironwood Wood",
   "block.rustic.stripped_olive_log": "Stripped Olive Log",
   "block.rustic.stripped_olive_wood": "Stripped Olive Wood",
+  "emi.category.rustic.tub_crushing": "Tub Crushing",
   "itemGroup.rustic.main": "Rustic"
 }

@@ -119,6 +119,9 @@ dependencies {
     compileOnlyApi("dev.emi:emi-neoforge:${property("emi_version")}:api")
     localRuntime("dev.emi:emi-neoforge:${property("emi_version")}")
 
+    runtimeOnly("maven.modrinth:jade:15.10.5+neoforge")
+    compileOnly("maven.modrinth:jade:15.10.5+neoforge")
+
     implementation("org.projectlombok:lombok:1.18.46")
     runtimeOnly("me.djtheredstoner:DevAuth-neoforge:1.2.1")
 }

@@ -9,6 +9,7 @@ import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemRegist
 import io.github.pouffy.rustic.init.RusticBlockEntities;
 import io.github.pouffy.rustic.init.RusticBlocks;
 import io.github.pouffy.rustic.init.RusticItems;
+import io.github.pouffy.rustic.init.RusticRecipeTypes;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.fml.ModContainer;
@@ -47,6 +48,8 @@ public class Rustic {
         RusticCreativeTab.staticInit();
         RusticBlocks.staticInit();
         RusticItems.staticInit();
+        RusticBlockEntities.staticInit();
+        RusticRecipeTypes.staticInit();
 
         modEventBus.addListener(RusticBlockEntities::addBlockEntities);
     }
