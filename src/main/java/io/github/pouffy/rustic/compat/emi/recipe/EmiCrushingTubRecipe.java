@@ -40,9 +40,9 @@ public class EmiCrushingTubRecipe extends BasicEmiRecipe {
 
     @Override
     public void addWidgets(WidgetHolder widgets) {
-        widgets.addSlot(EmiIngredient.of(recipe.getInput()), 20, 23);
+        widgets.addSlot(EmiIngredient.of(recipe.getInput()), 20, 23).recipeContext(this);
         widgets.addTexture(RusticEmiPlugin.ARROW, 42, 23);
-        widgets.add(new FluidSlotWidget(recipe.getResultFluid(this.registries), 70, 4, 8000));
-        widgets.addSlot(EmiStack.of(recipe.getByproduct()), 70, 42);
+        widgets.add(new FluidSlotWidget(recipe.getResultFluid(this.registries), 70, 4, 8000)).recipeContext(this);
+        widgets.addSlot(EmiStack.of(recipe.getByproduct()), 70, 42).recipeContext(this);
     }
 }
