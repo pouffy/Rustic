@@ -9,10 +9,13 @@ import io.github.pouffy.rustic.common.block.entity.CrushingTubBlockEntity;
 import io.github.pouffy.rustic.core.item.DisplayedItemStack;
 import io.github.pouffy.rustic.init.RusticTags;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
@@ -56,7 +59,7 @@ public class CrushingTubRenderer implements BlockEntityRenderer<CrushingTubBlock
             float min = 2f / 16f;
             float max = 14 / 16f;
             float depth = (2 / 16f) + ((fluid.getAmount()) / (float)capacity) * (4 / 16f);
-            ClientFluidHelper.renderStillTiledFace(Direction.UP, min, min, max, max, depth, buffer.getBuffer(ClientFluidHelper.fluid()), ms, light, color, fluidTexture);
+            ClientFluidHelper.renderStillTiledFace(Direction.UP, min, min, max, max, depth, buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS)), ms, light, color, fluidTexture);
             ms.popPose();
         }
     }

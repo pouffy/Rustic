@@ -6,15 +6,18 @@ import com.pouffydev.krystal_core.KrystalCore;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockRegistryHelper;
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemRegistryHelper;
-import io.github.pouffy.rustic.init.RusticBlockEntities;
-import io.github.pouffy.rustic.init.RusticBlocks;
-import io.github.pouffy.rustic.init.RusticItems;
-import io.github.pouffy.rustic.init.RusticRecipeTypes;
+import io.github.pouffy.rustic.core.fluid.transfer.FluidContainerTransferManager;
+import io.github.pouffy.rustic.core.fluid.transfer.FluidTransferSyncPacket;
+import io.github.pouffy.rustic.init.*;
+import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
+import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
@@ -40,6 +43,7 @@ public class Rustic {
     public Rustic(IEventBus modEventBus, ModContainer modContainer) {
         KrystalCore.disableDebugFeatures();
         KrystalCore.enableHoneyFluid();
+        FluidContainerTransferManager.INSTANCE.init();
         this.modEventBus = modEventBus;
         INSTANCE = this;
         this.registryHelper = new RegistryHelper(MODID, modEventBus);
@@ -50,8 +54,17 @@ public class Rustic {
         RusticItems.staticInit();
         RusticBlockEntities.staticInit();
         RusticRecipeTypes.staticInit();
+        RusticFluidTransferTypes.staticInit();
+        RusticIngredientTypes.staticInit();
 
         modEventBus.addListener(RusticBlockEntities::addBlockEntities);
+    }
+
+    @SubscribeEvent
+    private void registerPackets(RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(Rustic.MODID).versioned("1.0");
+
+        registrar.playToClient(FluidTransferSyncPacket.TYPE, FluidTransferSyncPacket.STREAM_CODEC, FluidTransferSyncPacket::handle);
     }
 
     public static IEventBus getEventBus() {
@@ -68,5 +81,9 @@ public class Rustic {
             return ResourceLocation.tryParse(path);
         }
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
+    }
+
+    public static String makeDescriptionId(String base, String name) {
+        return Util.makeDescriptionId(base, location(name));
     }
 }

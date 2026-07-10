@@ -37,14 +37,14 @@ public class DisplayedItemStack {
         return copy;
     }
 
-    public CompoundTag serializeNBT(HolderLookup.Provider registries) {
-        CompoundTag nbt = new CompoundTag();
-        nbt.put("Item", stack.save(registries, new CompoundTag()));
-        nbt.putInt("Angle", angle);
-        return nbt;
+    public CompoundTag serializeNBT(HolderLookup.Provider registries, CompoundTag nbt) {
+        CompoundTag tag = new CompoundTag();
+        tag.put("Item", stack.save(registries, nbt));
+        tag.putInt("Angle", angle);
+        return tag;
     }
 
-    public static Optional<DisplayedItemStack> read(CompoundTag nbt, HolderLookup.Provider registries) {
+    public static Optional<DisplayedItemStack> read(HolderLookup.Provider registries, CompoundTag nbt) {
         Optional<ItemStack> itemStack = ItemStack.parse(registries, nbt.getCompound("Item"));
         if (itemStack.isEmpty()) {
             return Optional.empty();

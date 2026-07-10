@@ -22,5 +22,6 @@ public class RusticRecipeCollector {
 
     public void add(boolean server) {
         generator.addProvider(server, new ModCrushingRecipeProvider(packOutput, lookupProvider));
+        generator.addProvider(server, new RusticFluidTransferProvider(packOutput, lookupProvider));
     }
 }

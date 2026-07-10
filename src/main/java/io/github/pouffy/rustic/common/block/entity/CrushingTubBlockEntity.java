@@ -1,6 +1,7 @@
 package io.github.pouffy.rustic.common.block.entity;
 
 import io.github.pouffy.rustic.core.fluid.RusticFluidTank;
+import io.github.pouffy.rustic.core.fluid.transfer.FluidTransferHelper;
 import io.github.pouffy.rustic.core.item.DisplayedItemContainer;
 import io.github.pouffy.rustic.core.recipe.RecipeSearch;
 import io.github.pouffy.rustic.init.RusticBlockEntities;
@@ -22,18 +23,15 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.common.SoundActions;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import org.jetbrains.annotations.NotNull;
 
@@ -81,15 +79,9 @@ public class CrushingTubBlockEntity extends BlockEntity {
         invalidateCapabilities();
     }
 
-    @Override
-    public void onLoad() {
-        super.onLoad();
-        if (tank != null) tank.setCapacity(getCapacity());
-        if (container != null) container.setSize(1);
-    }
-
     public void crush() {
         if (level == null) return;
+        boolean noRecipe = false;
         if (hasStack()) {
             ItemStack stack = getStack();
             var input = new SingleRecipeInput(stack);
@@ -123,19 +115,21 @@ public class CrushingTubBlockEntity extends BlockEntity {
         if (level == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem != ItemStack.EMPTY) {
-            if (((FluidUtil.getFluidHandler(heldItem).isPresent() || heldItem.getItem() instanceof BucketItem) && (FluidUtil.getFluidContained(heldItem).isEmpty())) || (heldItem.getItem() instanceof BucketItem bucketItem && bucketItem.content == Fluids.EMPTY)) {
-                var cap = level.getCapability(Capabilities.FluidHandler.BLOCK, this.worldPosition, this.getBlockState(), this, side);
-                if (cap != null) {
-                    boolean didFill = FluidUtil.interactWithFluidHandler(player, hand, cap);
-                    if (didFill) {
-                        markUpdated();
-                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                    }
-                }
-            } else {
-                player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
+            if (FluidTransferHelper.interactWithContainer(level, worldPosition, this.tank, player, hand).didTransfer()) {
                 markUpdated();
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
+            } else {
+                if (this.container.getStackInSlot(0).isEmpty()) {
+                    player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
+                    markUpdated();
+                    return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                } else {
+                    if (this.container.getStackInSlot(0).is(heldItem.getItem())) {
+                        player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
+                        markUpdated();
+                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
+                    } else return ItemInteractionResult.FAIL;
+                }
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -152,7 +146,7 @@ public class CrushingTubBlockEntity extends BlockEntity {
             markUpdated();
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
-        if (getStack() != ItemStack.EMPTY && !level.isClientSide) {
+        if (!getStack().isEmpty() && !level.isClientSide) {
             level.addFreshEntity(new ItemEntity(level, player.getX(), player.getY(), player.getZ(), getStack()));
             container.setStackInSlot(0, ItemStack.EMPTY);
             markUpdated();
@@ -169,7 +163,6 @@ public class CrushingTubBlockEntity extends BlockEntity {
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        assert level != null;
         this.tank.readFromNBT(registries, tag.getCompound("Tank"));
         this.container.deserializeNBT(registries, tag.getCompound("Container"));
     }

@@ -129,10 +129,10 @@ public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifia
         ListTag nbtTagList = new ListTag();
 
         for(int i = 0; i < this.stacks.size(); ++i) {
-            if (!(this.stacks.get(i)).isEmpty()) {
+            if (!this.stacks.get(i).isEmpty()) {
                 CompoundTag itemTag = new CompoundTag();
                 itemTag.putInt("Slot", i);
-                nbtTagList.add((this.stacks.get(i)).serializeNBT(provider));
+                nbtTagList.add(this.stacks.get(i).serializeNBT(provider, itemTag));
             }
         }
 
@@ -150,7 +150,7 @@ public class DisplayedItemContainer implements IItemHandler, IItemHandlerModifia
             CompoundTag itemTags = tagList.getCompound(i);
             int slot = itemTags.getInt("Slot");
             if (slot >= 0 && slot < this.stacks.size()) {
-                DisplayedItemStack.read(itemTags, provider).ifPresent((stack) -> this.stacks.set(slot, stack));
+                DisplayedItemStack.read(provider, itemTags).ifPresent((stack) -> this.stacks.set(slot, stack));
             }
         }
 

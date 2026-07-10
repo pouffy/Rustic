@@ -87,12 +87,13 @@ public class ClientFluidHelper {
     }
 
     private static final RenderType FLUID =
-            RenderType.create(Rustic.MODID + ":fluid", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, false, true, RenderType.CompositeState.builder()
+            RenderType.create(Rustic.MODID + ":fluid", DefaultVertexFormat.BLOCK, VertexFormat.Mode.QUADS, 256, true, true, RenderType.CompositeState.builder()
                     .setShaderState(RENDERTYPE_TRANSLUCENT_SHADER)
                     .setTextureState(BLOCK_SHEET_MIPPED)
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setLightmapState(LIGHTMAP)
-                    //.setOverlayState(NO_OVERLAY)
+                    .setCullState(NO_CULL)
+                    .setOutputState(MAIN_TARGET)
                     .createCompositeState(true));
 
     public static RenderType fluid() {
@@ -174,9 +175,14 @@ public class ClientFluidHelper {
         int g = color >> 8 & 0xff;
         int b = color & 0xff;
 
+        int lu = light & '\uffff';
+        int lv = light >> 16 & '\uffff';
+
         builder.addVertex(peek.pose(), x, y, z)
                 .setColor(r, g, b, a)
                 .setUv(u, v)
+                .setUv1(0, 10)
+                .setUv2(lu, lv)
                 .setLight(light)
                 .setNormal(peek.copy(), normal.getX(), normal.getY(), normal.getZ())
         ;
