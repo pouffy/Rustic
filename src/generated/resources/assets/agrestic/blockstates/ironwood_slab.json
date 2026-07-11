@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "agrestic:block/ironwood_slab"
+    },
+    "type=double": {
+      "model": "agrestic:block/ironwood_planks"
+    },
+    "type=top": {
+      "model": "agrestic:block/ironwood_slab_top"
+    }
+  }
+}

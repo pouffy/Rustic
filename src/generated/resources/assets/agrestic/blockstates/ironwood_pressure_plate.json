@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "powered=false": {
+      "model": "agrestic:block/ironwood_pressure_plate"
+    },
+    "powered=true": {
+      "model": "agrestic:block/ironwood_pressure_plate_down"
+    }
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "agrestic:block/wooden/olive/log_end",
+    "side": "agrestic:block/wooden/olive/log"
+  }
+}

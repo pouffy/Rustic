@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.pouffy.agrestic.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ModelBuilderMixin",
+    "RecipeManagerAccessor"
+  ],
+  "client": [
+    "PoseStackMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}

@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "agrestic:block/wooden/ironwood/stripped_log_end",
+    "side": "agrestic:block/wooden/ironwood/stripped_log"
+  }
+}

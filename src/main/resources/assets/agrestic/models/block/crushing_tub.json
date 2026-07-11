@@ -1,0 +1,37 @@
+{
+	"format_version": "1.9.0",
+	"credit": "Made by Pouffy",
+	"parent": "block/block",
+	"texture_size": [32, 32],
+	"textures": {
+		"texture": "agrestic:block/crushing_tub",
+		"particle": "block/barrel_side"
+	},
+	"render_type": "minecraft:cutout",
+	"elements": [
+		{
+			"from": [0, 0, 0],
+			"to": [16, 9, 16],
+			"faces": {
+				"north": {"uv": [0, 11.5, 8, 16], "texture": "#texture"},
+				"east": {"uv": [0, 11.5, 8, 16], "texture": "#texture"},
+				"south": {"uv": [0, 11.5, 8, 16], "texture": "#texture"},
+				"west": {"uv": [0, 11.5, 8, 16], "texture": "#texture"},
+				"up": {"uv": [0, 0, 8, 8], "texture": "#texture"},
+				"down": {"uv": [8, 0, 16, 8], "texture": "#texture"}
+			}
+		},
+		{
+			"from": [2, 2, 14],
+			"to": [14, 9, 2],
+			"rotation": {"angle": 0, "axis": "y", "origin": [2, 2, 14]},
+			"faces": {
+				"north": {"uv": [0.5, 8, 6.5, 11.5], "texture": "#texture"},
+				"east": {"uv": [0.5, 8, 6.5, 11.5], "texture": "#texture"},
+				"south": {"uv": [0.5, 8, 6.5, 11.5], "texture": "#texture"},
+				"west": {"uv": [0.5, 8, 6.5, 11.5], "texture": "#texture"},
+				"down": {"uv": [9, 9, 15, 15], "texture": "#texture"}
+			}
+		}
+	]
+}

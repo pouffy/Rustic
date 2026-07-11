@@ -1,0 +1,8 @@
+{
+  "parent": "agrestic:block/template/alt_door_bottom_left",
+  "textures": {
+    "bottom": "agrestic:block/wooden/olive/door_bottom",
+    "side": "agrestic:block/wooden/olive/door_sides",
+    "top": "agrestic:block/wooden/olive/door_top"
+  }
+}

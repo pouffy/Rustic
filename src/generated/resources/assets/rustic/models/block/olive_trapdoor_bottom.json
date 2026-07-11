@@ -1,7 +1,0 @@
-{
-  "parent": "rustic:block/template/alt_trapdoor_bottom",
-  "textures": {
-    "front": "rustic:block/wooden/olive/trapdoor",
-    "side": "rustic:block/wooden/olive/trapdoor_sides"
-  }
-}

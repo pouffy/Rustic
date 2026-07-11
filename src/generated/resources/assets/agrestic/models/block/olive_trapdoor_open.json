@@ -1,0 +1,7 @@
+{
+  "parent": "agrestic:block/template/alt_trapdoor_open",
+  "textures": {
+    "front": "agrestic:block/wooden/olive/trapdoor",
+    "side": "agrestic:block/wooden/olive/trapdoor_sides"
+  }
+}

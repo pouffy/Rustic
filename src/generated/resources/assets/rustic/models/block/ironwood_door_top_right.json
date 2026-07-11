@@ -1,8 +1,0 @@
-{
-  "parent": "rustic:block/template/alt_door_top_right",
-  "textures": {
-    "bottom": "rustic:block/wooden/ironwood/door_bottom",
-    "side": "rustic:block/wooden/ironwood/door_sides",
-    "top": "rustic:block/wooden/ironwood/door_top"
-  }
-}

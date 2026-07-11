@@ -1,8 +1,0 @@
-{
-  "parent": "rustic:block/template/alt_door_top_left_open",
-  "textures": {
-    "bottom": "rustic:block/wooden/olive/door_bottom",
-    "side": "rustic:block/wooden/olive/door_sides",
-    "top": "rustic:block/wooden/olive/door_top"
-  }
-}

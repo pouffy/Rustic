@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "agrestic:block/wooden/olive/planks",
+    "side": "agrestic:block/wooden/olive/planks",
+    "top": "agrestic:block/wooden/olive/planks"
+  }
+}

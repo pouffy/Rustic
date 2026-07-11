@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:fill_item",
+  "fluid": {
+    "amount": 250,
+    "tag": "c:honey"
+  },
+  "input": {
+    "item": "minecraft:glass_bottle"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:honey_bottle"
+  }
+}
