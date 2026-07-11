@@ -14,6 +14,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.loading.FMLEnvironment;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -23,6 +24,7 @@ import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
 
 @Mod(Agrestic.MODID)
+@EventBusSubscriber(modid = Agrestic.MODID)
 public class Agrestic {
     public static Agrestic INSTANCE;
     public static final String MODID = "agrestic";
@@ -61,7 +63,7 @@ public class Agrestic {
     }
 
     @SubscribeEvent
-    private void registerPackets(RegisterPayloadHandlersEvent event) {
+    private static void registerPackets(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(Agrestic.MODID).versioned("1.0");
 
         registrar.playToClient(FluidTransferSyncPacket.TYPE, FluidTransferSyncPacket.STREAM_CODEC, FluidTransferSyncPacket::handle);

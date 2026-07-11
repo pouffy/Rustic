@@ -91,7 +91,7 @@ public class CrushingTubBlock extends BaseEntityBlock implements ILightEmitting 
         }
 
         if (level.getBlockEntity(pos) instanceof CrushingTubBlockEntity blockEntity && blockEntity.hasStack()) {
-            level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 1.1, pos.getZ() + 0.5, blockEntity.getStack()));
+            level.addFreshEntity(new ItemEntity(level, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, blockEntity.getStack()));
         }
 
         super.onRemove(state, level, pos, newState, isMoving);
