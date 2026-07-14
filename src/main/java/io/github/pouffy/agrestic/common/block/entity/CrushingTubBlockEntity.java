@@ -106,7 +106,7 @@ public class CrushingTubBlockEntity extends BlockEntity {
                     if (!this.level.isClientSide) {
                         this.tank.forceFill(output, IFluidHandler.FluidAction.EXECUTE);
                         this.container.extractItem(0, 1, false);
-                        ItemStack by = recipe.getByproduct().copy();
+                        ItemStack by = recipe.getByproduct().rollOutput(this.level.random, 0);
                         if (!by.isEmpty()) {
                             Block.popResource(level, worldPosition, by);
                         }

@@ -23,7 +23,7 @@
   "block.agrestic.ironwood_trapdoor": "Ironwood Trapdoor",
   "block.agrestic.ironwood_wood": "Ironwood Wood",
   "block.agrestic.marsh_mallow": "Marsh Mallow",
-  "block.agrestic.moonscap": "Moonscap",
+  "block.agrestic.mooncap": "Mooncap",
   "block.agrestic.olive_button": "Olive Button",
   "block.agrestic.olive_door": "Olive Door",
   "block.agrestic.olive_fence": "Olive Fence",
@@ -73,6 +73,8 @@
   "itemGroup.agrestic.agriculture": "Agrestic Agriculture",
   "itemGroup.agrestic.alchemy": "Agrestic Alchemy",
   "itemGroup.agrestic.decoration": "Agrestic Decorations",
+  "recipe.agrestic.chance": "Chance: %s",
+  "recipe.agrestic.time": "Time: %s",
   "ui.agrestic.tooltip.fluid": "%s %smb / %smb",
   "ui.agrestic.tooltip.item": "%s x%s"
 }

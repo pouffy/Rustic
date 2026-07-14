@@ -9,6 +9,7 @@ import io.github.pouffy.agrestic.datagen.server.ModAdvancementProvider;
 import io.github.pouffy.agrestic.datagen.server.loot.ModLootGenerator;
 import io.github.pouffy.agrestic.datagen.server.recipe.AgresticRecipeCollector;
 import io.github.pouffy.agrestic.datagen.server.tags.ModBlockTagsProvider;
+import io.github.pouffy.agrestic.datagen.server.tags.ModEntityTypeTagsProvider;
 import io.github.pouffy.agrestic.datagen.server.tags.ModItemTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
@@ -37,6 +38,7 @@ public class ExampleDataGenerator {
 
         ModBlockTagsProvider blockTags = new ModBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
         ModItemTagsProvider itemTags = new ModItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper);
+        ModEntityTypeTagsProvider entityTypeTags = new ModEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
         AdvancementProvider advancements = new AdvancementProvider(packOutput, lookupProvider, existingFileHelper, List.of(new ModAdvancementProvider()));
         ModLootGenerator lootGenerator = new ModLootGenerator(packOutput, lookupProvider);
@@ -49,6 +51,7 @@ public class ExampleDataGenerator {
 
         generator.addProvider(server, blockTags);
         generator.addProvider(server, itemTags);
+        generator.addProvider(server, entityTypeTags);
 
         generator.addProvider(server, advancements);
         generator.addProvider(server, lootGenerator);

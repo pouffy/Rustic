@@ -75,6 +75,8 @@ public class ModBlockTagsProvider extends BlockTagsProvider {
         this.tag(AgresticTags.IRONWOOD_LOGS.blockTag()).add(AgresticBlocks.IRONWOOD.log().get(), AgresticBlocks.IRONWOOD.wood().get(), AgresticBlocks.IRONWOOD.strippedLog().get(), AgresticBlocks.IRONWOOD.strippedWood().get());
         this.tag(BlockTags.LOGS_THAT_BURN).addTags(AgresticTags.OLIVE_LOGS.blockTag(), AgresticTags.IRONWOOD_LOGS.blockTag());
         this.tag(BlockTags.OVERWORLD_NATURAL_LOGS).addTags(AgresticTags.OLIVE_LOGS.blockTag(), AgresticTags.IRONWOOD_LOGS.blockTag());
+
+        this.tag(AgresticTags.HERBS_CAN_SURVIVE_ON).addTags(Tags.Blocks.VILLAGER_FARMLANDS).add(Blocks.DIRT, Blocks.GRASS_BLOCK, Blocks.PODZOL);
     }
 
     @SafeVarargs

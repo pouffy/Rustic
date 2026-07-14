@@ -11,6 +11,15 @@
     },
     "age=3": {
       "model": "agrestic:block/wind_thistle_3"
+    },
+    "age=4": {
+      "model": "agrestic:block/wind_thistle_4"
+    },
+    "age=5": {
+      "model": "agrestic:block/wind_thistle_5"
+    },
+    "age=6": {
+      "model": "agrestic:block/wind_thistle_6"
     }
   }
 }

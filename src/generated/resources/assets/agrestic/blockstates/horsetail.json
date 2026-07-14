@@ -11,6 +11,15 @@
     },
     "age=3": {
       "model": "agrestic:block/horsetail_3"
+    },
+    "age=4": {
+      "model": "agrestic:block/horsetail_4"
+    },
+    "age=5": {
+      "model": "agrestic:block/horsetail_5"
+    },
+    "age=6": {
+      "model": "agrestic:block/horsetail_6"
     }
   }
 }

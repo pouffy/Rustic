@@ -253,8 +253,8 @@ public class ModBlockStateProvider extends BlockStateProvider {
 
     private void herbCrop(Supplier<? extends Block> block) {
         String name = this.name(block.get());
-        Function<Integer, ResourceLocation> texture = (age) -> Agrestic.location("block/herbs/" + name + "_" + (age == 3 ? age : 0));
-        Function<Integer, ModelFile> ageModel = (age) -> this.models().withExistingParent(name + "_" + age, "block/cross").texture("cross", texture.apply(age)).renderType("cutout");
+        Function<Integer, ResourceLocation> texture = (age) -> Agrestic.location("block/herbs/" + name + "_" + (age == 6 ? age : 0));
+        Function<Integer, ModelFile> ageModel = (age) -> this.models().withExistingParent(name + "_" + age, Agrestic.location("block/template/crop_cross")).texture("cross", texture.apply(age)).renderType("cutout");
         getVariantBuilder(block.get()).forAllStatesExcept((state) -> {
             int age = state.getValue(HerbBlock.AGE);
             return ConfiguredModel.builder().modelFile(ageModel.apply(age)).build();

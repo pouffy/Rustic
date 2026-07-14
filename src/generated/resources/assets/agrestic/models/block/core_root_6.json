@@ -1,0 +1,7 @@
+{
+  "parent": "agrestic:block/template/crop_cross",
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "cross": "agrestic:block/herbs/core_root_6"
+  }
+}

@@ -41,7 +41,7 @@ public class AgresticItems {
     public static final ItemDefinition<HerbItem> GINSENG = register("ginseng", (p) -> new HerbItem(AgresticBlocks.GINSENG.get(), p.food(AgresticFoodValues.GINSENG)));
     public static final ItemDefinition<HerbItem> MARSH_MALLOW = register("marsh_mallow", (p) -> new HerbItem(AgresticBlocks.MARSH_MALLOW.get(), p.food(AgresticFoodValues.MARSH_MALLOW)));
 
-    //public static final ItemDefinition<AgresticFoodItem> IRON_BERRIES = register("iron_berries", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.IRON_BERRIES)));
+    //public static final ItemDefinition<AgresticFoodItem> IRONBERRIES = register("ironberries", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.IRONBERRIES)));
     public static final ItemDefinition<AgresticFoodItem> OLIVES = register("olives", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.OLIVES)));
     public static final ItemDefinition<AgresticFoodItem> CHILLI_PEPPER = register("chilli_pepper", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.CHILLI_PEPPER)) {
         @Override

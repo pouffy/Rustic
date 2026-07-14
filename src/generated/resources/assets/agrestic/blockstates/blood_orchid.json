@@ -11,6 +11,15 @@
     },
     "age=3": {
       "model": "agrestic:block/blood_orchid_3"
+    },
+    "age=4": {
+      "model": "agrestic:block/blood_orchid_4"
+    },
+    "age=5": {
+      "model": "agrestic:block/blood_orchid_5"
+    },
+    "age=6": {
+      "model": "agrestic:block/blood_orchid_6"
     }
   }
 }

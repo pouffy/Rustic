@@ -1,5 +1,6 @@
 package io.github.pouffy.agrestic.datagen.server.recipe.builder;
 
+import com.pouffydev.krystal_core.foundation.data.recipe.result.ChanceResult;
 import io.github.pouffy.agrestic.common.recipe.CrushingTubRecipe;
 import net.minecraft.advancements.Advancement;
 import net.minecraft.advancements.AdvancementRequirements;
@@ -21,14 +22,14 @@ import javax.annotation.Nonnull;
 public class CrushingTubRecipeBuilder implements RecipeBuilder {
     private final Ingredient ingredient;
     private final FluidStack output;
-    private ItemStack byproduct = ItemStack.EMPTY;
+    private ChanceResult byproduct = ChanceResult.EMPTY;
 
     public CrushingTubRecipeBuilder(Ingredient ingredient, FluidStack output) {
         this.ingredient = ingredient;
         this.output = output;
     }
 
-    public CrushingTubRecipeBuilder byproduct(@Nonnull ItemStack byproduct) {
+    public CrushingTubRecipeBuilder byproduct(@Nonnull ChanceResult byproduct) {
         this.byproduct = byproduct;
         return this;
     }

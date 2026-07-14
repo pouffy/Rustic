@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "agrestic:block/herbs/mooncap_3"
+    "layer0": "agrestic:block/herbs/mooncap_6"
   }
 }

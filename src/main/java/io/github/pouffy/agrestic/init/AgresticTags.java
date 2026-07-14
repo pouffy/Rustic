@@ -15,6 +15,12 @@ public class AgresticTags {
     public static final SharedTag OLIVE_LOGS = createSharedTag("olive_logs");
     public static final SharedTag IRONWOOD_LOGS = createSharedTag("ironwood_logs");
     public static final TagKey<Item> RENDER_UPRIGHT = createItemTag("render_upright");
+    public static final SharedTag FERTILE_SOILS = createSharedTag("fertile_soils");
+
+    public static final TagKey<Block> HERBS_CAN_SURVIVE_ON = createBlockTag("herbs_can_survive_on");
+
+    public static final TagKey<EntityType<?>> DENSE_HERB_UNAFFECTED = createEntityTag("dense_herb_unaffected");
+    public static final TagKey<EntityType<?>> PRICKLY_HERB_UNAFFECTED = createEntityTag("prickly_herb_unaffected");
 
     public AgresticTags() {
     }

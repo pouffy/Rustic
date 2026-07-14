@@ -37,7 +37,7 @@ public class AgresticBlocks {
 
     public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)));
 
-    public static final BlockDefinition<HerbBlock> ALOE_VERA = register("aloe_vera", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+    public static final BlockDefinition<HerbBlock> ALOE_VERA = register("aloe_vera", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS), (state) -> state.is(Blocks.SAND), true, true) {
         @Override
         public @NotNull Supplier<? extends Item> getHerb() {
             return this::asItem;
@@ -97,14 +97,10 @@ public class AgresticBlocks {
             return AgresticItems.MARSH_MALLOW;
         }
     });
-    public static final BlockDefinition<HerbBlock> MOONCAP = register("moonscap", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+    public static final BlockDefinition<HerbBlock> MOONCAP = register("mooncap", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS), 8) {
         @Override
         public @NotNull Supplier<? extends Item> getHerb() {
             return this::asItem;
-        }
-        @Override
-        public int getMinLight() {
-            return 8;
         }
     });
     public static final BlockDefinition<HerbBlock> VANTA_LILY = register("vanta_lily", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
@@ -113,7 +109,7 @@ public class AgresticBlocks {
             return this::asItem;
         }
     });
-    public static final BlockDefinition<HerbBlock> WIND_THISTLE = register("wind_thistle", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+    public static final BlockDefinition<HerbBlock> WIND_THISTLE = register("wind_thistle", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS), true, true) {
         @Override
         public @NotNull Supplier<? extends Item> getHerb() {
             return this::asItem;

@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:crushing_tub",
+  "input": {
+    "item": "agrestic:olives"
+  },
+  "output": {
+    "amount": 250,
+    "id": "agrestic:olive_oil"
+  }
+}

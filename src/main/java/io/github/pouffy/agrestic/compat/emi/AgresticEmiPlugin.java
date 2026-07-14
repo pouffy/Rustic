@@ -22,6 +22,9 @@ import net.minecraft.world.level.Level;
 public class AgresticEmiPlugin implements EmiPlugin {
     public static final EmiTexture TANK = new EmiTexture(Agrestic.location("textures/gui/emi/widgets.png"), 0, 0, 18, 34);
     public static final EmiTexture ARROW = new EmiTexture(Agrestic.location("textures/gui/emi/widgets.png"), 18, 0, 22, 17);
+    public static final EmiTexture ALT_ARROW = new EmiTexture(Agrestic.location("textures/gui/emi/widgets.png"), 18, 17, 22, 16);
+    public static final EmiTexture RESULT = new EmiTexture(Agrestic.location("textures/gui/emi/widgets.png"), 40, 0, 18, 18);
+    public static final EmiTexture RESULT_CHANCE = new EmiTexture(Agrestic.location("textures/gui/emi/widgets.png"), 40, 18, 18, 18);
 
     public static final EmiStack CRUSHING_TUB = EmiStack.of(AgresticBlocks.CRUSHING_TUB.get());
 

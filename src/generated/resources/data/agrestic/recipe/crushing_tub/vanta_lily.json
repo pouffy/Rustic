@@ -1,0 +1,10 @@
+{
+  "type": "agrestic:crushing_tub",
+  "input": {
+    "item": "agrestic:vanta_lily"
+  },
+  "output": {
+    "amount": 250,
+    "id": "agrestic:vanta_oil"
+  }
+}

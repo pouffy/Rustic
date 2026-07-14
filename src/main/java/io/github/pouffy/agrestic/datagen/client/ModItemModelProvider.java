@@ -33,18 +33,22 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.IRONWOOD_HANGING_SIGN, "wooden/ironwood/hanging_sign");
         this.basicItem(AgresticItems.IRONWOOD_BOAT, "wooden/ironwood/boat");
         this.basicItem(AgresticItems.IRONWOOD_CHEST_BOAT, "wooden/ironwood/boat_with_chest");
+        this.basicItem(AgresticItems.OLIVES);
+        this.basicItem(AgresticItems.CHILLI_PEPPER);
         this.basicItem(AgresticItems.TALLOW);
+        this.basicItem(AgresticItems.GOLD_DUST);
+        this.basicItem(AgresticItems.TINY_IRON_DUST);
         this.herb(AgresticBlocks.ALOE_VERA::asItem);
         this.herb(AgresticBlocks.BLOOD_ORCHID::asItem);
         this.herb(AgresticBlocks.CHAMOMILE::asItem);
         this.herb(AgresticBlocks.CLOUDSBLUFF::asItem);
         this.herb(AgresticBlocks.COHOSH::asItem);
         this.herb(AgresticBlocks.CORE_ROOT::asItem);
-        this.blockItem(AgresticBlocks.DEATHSTALK::asItem, "herbs/deathstalk_3");
+        this.blockItem(AgresticBlocks.DEATHSTALK::asItem, "herbs/deathstalk_6");
         this.herb(AgresticBlocks.GINSENG::asItem);
         this.herb(AgresticBlocks.HORSETAIL::asItem);
         this.herb(AgresticBlocks.MARSH_MALLOW::asItem);
-        this.blockItem(AgresticBlocks.MOONCAP::asItem, "herbs/mooncap_3");
+        this.blockItem(AgresticBlocks.MOONCAP::asItem, "herbs/mooncap_6");
         this.herb(AgresticBlocks.VANTA_LILY::asItem);
         this.herb(AgresticBlocks.WIND_THISTLE::asItem);
     }

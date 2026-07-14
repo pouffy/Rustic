@@ -44,6 +44,8 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         }
 
         add("emi.category.agrestic.tub_crushing", "Tub Crushing");
+        add("recipe.agrestic.chance", "Chance: %s");
+        add("recipe.agrestic.time", "Time: %s");
         add("block.agrestic.tank.drained", "Drained %s mb %s");
         add("block.agrestic.tank.filled", "Filled %s mb %s");
 

@@ -11,6 +11,15 @@
     },
     "age=3": {
       "model": "agrestic:block/aloe_vera_3"
+    },
+    "age=4": {
+      "model": "agrestic:block/aloe_vera_4"
+    },
+    "age=5": {
+      "model": "agrestic:block/aloe_vera_5"
+    },
+    "age=6": {
+      "model": "agrestic:block/aloe_vera_6"
     }
   }
 }

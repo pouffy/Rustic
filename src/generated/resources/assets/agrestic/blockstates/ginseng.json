@@ -11,6 +11,15 @@
     },
     "age=3": {
       "model": "agrestic:block/ginseng_3"
+    },
+    "age=4": {
+      "model": "agrestic:block/ginseng_4"
+    },
+    "age=5": {
+      "model": "agrestic:block/ginseng_5"
+    },
+    "age=6": {
+      "model": "agrestic:block/ginseng_6"
     }
   }
 }
