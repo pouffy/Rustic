@@ -24,7 +24,7 @@ public class AgresticCreativeTab {
 
     public static final DeferredHolder<CreativeModeTab, CreativeModeTab> DECORATION = registerTab("decoration", AgresticBlocks.OLIVE::planks, (params, output) -> {}, RegistryHelper.noAction());
 
-    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ALCHEMY = registerTab("alchemy", () -> AgresticItems.TINY_IRON_DUST, (params, output) -> {}, RegistryHelper.noAction());
+    public static final DeferredHolder<CreativeModeTab, CreativeModeTab> ALCHEMY = registerTab("alchemy", () -> AgresticBlocks.ALOE_VERA, (params, output) -> {}, RegistryHelper.noAction());
 
     @Setter
     private static ResourceKey<CreativeModeTab> currentTab = AGRICULTURE.getKey();
@@ -107,19 +107,19 @@ public class AgresticCreativeTab {
         toChain(AgresticItems.IRONWOOD_CHEST_BOAT);
         endChain();
         setCurrentTab(ALCHEMY.getKey());
-        ///add(AgresticItems.ALOE_VERA);
-        ///add(AgresticItems.BLOOD_ORCHID);
-        ///add(AgresticItems.CHAMOMILE);
-        ///add(AgresticItems.CLOUDSBLUFF);
-        ///add(AgresticItems.COHOSH);
-        ///add(AgresticItems.HORSETAIL);
-        ///add(AgresticItems.VANTA_LILY);
-        ///add(AgresticItems.WIND_THISTLE);
-        ///add(AgresticItems.CORE_ROOT);
-        ///add(AgresticItems.GINSENG);
-        ///add(AgresticItems.MARSH_MALLOW);
-        ///add(AgresticItems.MOONCAP_MUSHROOM);
-        ///add(AgresticItems.DEATHSTALK_MUSHROOM);
+        add(AgresticBlocks.ALOE_VERA);
+        add(AgresticBlocks.BLOOD_ORCHID);
+        add(AgresticBlocks.CHAMOMILE);
+        add(AgresticItems.CLOUDSBLUFF);
+        add(AgresticBlocks.COHOSH);
+        add(AgresticBlocks.HORSETAIL);
+        add(AgresticBlocks.VANTA_LILY);
+        add(AgresticBlocks.WIND_THISTLE);
+        add(AgresticItems.CORE_ROOT);
+        add(AgresticItems.GINSENG);
+        add(AgresticItems.MARSH_MALLOW);
+        add(AgresticBlocks.MOONCAP);
+        add(AgresticBlocks.DEATHSTALK);
         ///add(AgresticBlocks.BASIC_CONDENSER);
         ///add(AgresticBlocks.BASIC_RETORT);
         ///add(AgresticBlocks.ADVANCED_CONDENSER);

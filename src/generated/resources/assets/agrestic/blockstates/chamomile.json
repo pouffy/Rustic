@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "agrestic:block/chamomile_0"
+    },
+    "age=1": {
+      "model": "agrestic:block/chamomile_1"
+    },
+    "age=2": {
+      "model": "agrestic:block/chamomile_2"
+    },
+    "age=3": {
+      "model": "agrestic:block/chamomile_3"
+    }
+  }
+}

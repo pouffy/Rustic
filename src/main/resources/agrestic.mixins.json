@@ -4,6 +4,7 @@
   "package": "io.github.pouffy.agrestic.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "BoatItemAccessor",
     "ModelBuilderMixin",
     "RecipeManagerAccessor"
   ],

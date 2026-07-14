@@ -4,8 +4,15 @@ import com.pouffydev.krystal_core.foundation.data.provider.client.KrystalItemMod
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticItems;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.Item;
+import net.neoforged.neoforge.client.model.generators.ItemModelBuilder;
+import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+
+import java.util.function.Supplier;
 
 public class ModItemModelProvider extends KrystalItemModelProvider {
     public ModItemModelProvider(PackOutput output, ExistingFileHelper existingFileHelper) {
@@ -27,5 +34,26 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.IRONWOOD_BOAT, "wooden/ironwood/boat");
         this.basicItem(AgresticItems.IRONWOOD_CHEST_BOAT, "wooden/ironwood/boat_with_chest");
         this.basicItem(AgresticItems.TALLOW);
+        this.herb(AgresticBlocks.ALOE_VERA::asItem);
+        this.herb(AgresticBlocks.BLOOD_ORCHID::asItem);
+        this.herb(AgresticBlocks.CHAMOMILE::asItem);
+        this.herb(AgresticBlocks.CLOUDSBLUFF::asItem);
+        this.herb(AgresticBlocks.COHOSH::asItem);
+        this.herb(AgresticBlocks.CORE_ROOT::asItem);
+        this.blockItem(AgresticBlocks.DEATHSTALK::asItem, "herbs/deathstalk_3");
+        this.herb(AgresticBlocks.GINSENG::asItem);
+        this.herb(AgresticBlocks.HORSETAIL::asItem);
+        this.herb(AgresticBlocks.MARSH_MALLOW::asItem);
+        this.blockItem(AgresticBlocks.MOONCAP::asItem, "herbs/mooncap_3");
+        this.herb(AgresticBlocks.VANTA_LILY::asItem);
+        this.herb(AgresticBlocks.WIND_THISTLE::asItem);
+    }
+
+    public ItemModelBuilder blockItem(Supplier<? extends Item> item, String texture) {
+        return this.getBuilder(itemName(item.get())).parent(new ModelFile.UncheckedModelFile("item/generated")).texture("layer0", ResourceLocation.fromNamespaceAndPath(this.modid, "block/%s".formatted(texture)));
+    }
+
+    public ItemModelBuilder herb(Supplier<? extends Item> item) {
+        return this.basicItem(item, "herbs/" + itemName(item.get()), "");
     }
 }

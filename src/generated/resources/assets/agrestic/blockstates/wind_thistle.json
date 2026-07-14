@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "agrestic:block/wind_thistle_0"
+    },
+    "age=1": {
+      "model": "agrestic:block/wind_thistle_1"
+    },
+    "age=2": {
+      "model": "agrestic:block/wind_thistle_2"
+    },
+    "age=3": {
+      "model": "agrestic:block/wind_thistle_3"
+    }
+  }
+}

@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic.init;
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.AgresticEnumParams;
+import io.github.pouffy.agrestic.common.item.HerbItem;
 import io.github.pouffy.agrestic.core.item.AgresticFoodItem;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -34,6 +35,11 @@ public class AgresticItems {
     public static final ItemDefinition<Item> TALLOW = register("tallow", Item::new);
     public static final ItemDefinition<Item> TINY_IRON_DUST = register("tiny_iron_dust", Item::new);
     public static final ItemDefinition<Item> GOLD_DUST = register("gold_dust", Item::new);
+
+    public static final ItemDefinition<HerbItem> CLOUDSBLUFF = register("cloudsbluff", (p) -> new HerbItem(AgresticBlocks.CLOUDSBLUFF.get(), p.food(AgresticFoodValues.CLOUDSBLUFF)));
+    public static final ItemDefinition<HerbItem> CORE_ROOT = register("core_root", (p) -> new HerbItem(AgresticBlocks.CORE_ROOT.get(), p.food(AgresticFoodValues.CORE_ROOT)));
+    public static final ItemDefinition<HerbItem> GINSENG = register("ginseng", (p) -> new HerbItem(AgresticBlocks.GINSENG.get(), p.food(AgresticFoodValues.GINSENG)));
+    public static final ItemDefinition<HerbItem> MARSH_MALLOW = register("marsh_mallow", (p) -> new HerbItem(AgresticBlocks.MARSH_MALLOW.get(), p.food(AgresticFoodValues.MARSH_MALLOW)));
 
     //public static final ItemDefinition<AgresticFoodItem> IRON_BERRIES = register("iron_berries", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.IRON_BERRIES)));
     public static final ItemDefinition<AgresticFoodItem> OLIVES = register("olives", (p) -> new AgresticFoodItem(p.food(AgresticFoodValues.OLIVES)));

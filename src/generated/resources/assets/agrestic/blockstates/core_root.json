@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "age=0": {
+      "model": "agrestic:block/core_root_0"
+    },
+    "age=1": {
+      "model": "agrestic:block/core_root_1"
+    },
+    "age=2": {
+      "model": "agrestic:block/core_root_2"
+    },
+    "age=3": {
+      "model": "agrestic:block/core_root_3"
+    }
+  }
+}

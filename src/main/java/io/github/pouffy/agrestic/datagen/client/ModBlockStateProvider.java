@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic.datagen.client;
 
 import io.github.pouffy.agrestic.Agrestic;
+import io.github.pouffy.agrestic.common.block.HerbBlock;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
@@ -15,6 +16,7 @@ import net.neoforged.neoforge.client.model.generators.ConfiguredModel;
 import net.neoforged.neoforge.client.model.generators.ModelFile;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class ModBlockStateProvider extends BlockStateProvider {
@@ -46,6 +48,19 @@ public class ModBlockStateProvider extends BlockStateProvider {
             justParticle(woodset.hangingWallSign(), Agrestic.location("block/wooden/%s/stripped_log".formatted(name)));
         }
         simpleExisting(AgresticBlocks.CRUSHING_TUB, Agrestic.location("block/crushing_tub"));
+        herbCrop(AgresticBlocks.ALOE_VERA);
+        herbCrop(AgresticBlocks.BLOOD_ORCHID);
+        herbCrop(AgresticBlocks.CHAMOMILE);
+        herbCrop(AgresticBlocks.CLOUDSBLUFF);
+        herbCrop(AgresticBlocks.COHOSH);
+        herbCrop(AgresticBlocks.CORE_ROOT);
+        herbCrop(AgresticBlocks.DEATHSTALK);
+        herbCrop(AgresticBlocks.GINSENG);
+        herbCrop(AgresticBlocks.HORSETAIL);
+        herbCrop(AgresticBlocks.MARSH_MALLOW);
+        herbCrop(AgresticBlocks.MOONCAP);
+        herbCrop(AgresticBlocks.VANTA_LILY);
+        herbCrop(AgresticBlocks.WIND_THISTLE);
     }
 
     private void simpleBlockItem(Supplier<? extends Block> block) {
@@ -234,6 +249,16 @@ public class ModBlockStateProvider extends BlockStateProvider {
     private void justParticle(Supplier<? extends Block> block, ResourceLocation texture) {
         String name = this.name(block.get());
         this.simpleBlock(block.get(), models().getBuilder(name).texture("particle", texture));
+    }
+
+    private void herbCrop(Supplier<? extends Block> block) {
+        String name = this.name(block.get());
+        Function<Integer, ResourceLocation> texture = (age) -> Agrestic.location("block/herbs/" + name + "_" + (age == 3 ? age : 0));
+        Function<Integer, ModelFile> ageModel = (age) -> this.models().withExistingParent(name + "_" + age, "block/cross").texture("cross", texture.apply(age)).renderType("cutout");
+        getVariantBuilder(block.get()).forAllStatesExcept((state) -> {
+            int age = state.getValue(HerbBlock.AGE);
+            return ConfiguredModel.builder().modelFile(ageModel.apply(age)).build();
+        });
     }
 
     private ResourceLocation extend(ResourceLocation rl, String suffix) {return ResourceLocation.fromNamespaceAndPath(rl.getNamespace(), rl.getPath() + suffix);}

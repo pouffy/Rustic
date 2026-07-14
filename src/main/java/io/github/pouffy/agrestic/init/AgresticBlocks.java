@@ -3,14 +3,13 @@ package io.github.pouffy.agrestic.init;
 import com.pouffydev.krystal_core.foundation.data.loot.SelfBlockLootType;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockProperties;
-import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockRegistryHelper;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.common.block.CrushingTubBlock;
+import io.github.pouffy.agrestic.common.block.HerbBlock;
 import io.github.pouffy.agrestic.common.block.LogBlock;
 import io.github.pouffy.agrestic.core.block.DoorBlockLootType;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.block.SlabBlockLootType;
-import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.*;
@@ -21,6 +20,7 @@ import net.minecraft.world.level.block.state.properties.WoodType;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -36,6 +36,89 @@ public class AgresticBlocks {
     public static final Woodset IRONWOOD = new Woodset("ironwood");
 
     public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)));
+
+    public static final BlockDefinition<HerbBlock> ALOE_VERA = register("aloe_vera", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> BLOOD_ORCHID = register("blood_orchid", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> CHAMOMILE = register("chamomile", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> CLOUDSBLUFF = registerNoItem("cloudsbluff", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return AgresticItems.CLOUDSBLUFF;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> COHOSH = register("cohosh", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> CORE_ROOT = registerNoItem("core_root", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return AgresticItems.CORE_ROOT;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> DEATHSTALK = register("deathstalk", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> GINSENG = registerNoItem("ginseng", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return AgresticItems.GINSENG;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> HORSETAIL = register("horsetail", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> MARSH_MALLOW = registerNoItem("marsh_mallow", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return AgresticItems.MARSH_MALLOW;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> MOONCAP = register("moonscap", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+        @Override
+        public int getMinLight() {
+            return 8;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> VANTA_LILY = register("vanta_lily", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
+    public static final BlockDefinition<HerbBlock> WIND_THISTLE = register("wind_thistle", () -> new HerbBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.SHORT_GRASS)) {
+        @Override
+        public @NotNull Supplier<? extends Item> getHerb() {
+            return this::asItem;
+        }
+    });
 
     public static void staticInit(IEventBus bus) {
         HELPER.register(bus);
