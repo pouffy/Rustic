@@ -31,6 +31,7 @@ public class AgresticBiomeModifiers {
     }
 
     private void setup() {
+        GenerationStep.Decoration topLayerModifications = GenerationStep.Decoration.TOP_LAYER_MODIFICATION;
         GenerationStep.Decoration vegetalDecoration = GenerationStep.Decoration.VEGETAL_DECORATION;
         GenerationStep.Decoration localModifications = GenerationStep.Decoration.LOCAL_MODIFICATIONS;
 

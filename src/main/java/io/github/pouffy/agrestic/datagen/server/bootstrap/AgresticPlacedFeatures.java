@@ -7,6 +7,7 @@ import net.minecraft.core.HolderGetter;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.placement.NoiseBasedCountPlacement;
@@ -27,10 +28,10 @@ public class AgresticPlacedFeatures {
         HolderGetter<ConfiguredFeature<?, ?>> featureLookup = context.lookup(Registries.CONFIGURED_FEATURE);
 
         // Ironwood
-        register(context, IRONWOOD_TREE, featureLookup.getOrThrow(AgresticConfiguredFeatures.IRONWOOD_TREE), NoiseBasedCountPlacement.of(0, 0.05f, 1), PlacementUtils.filteredByBlockSurvival(AgresticBlocks.IRONWOOD_SAPLING.block()));
+        register(context, IRONWOOD_TREE, featureLookup.getOrThrow(AgresticConfiguredFeatures.IRONWOOD_TREE), VegetationPlacements.treePlacement(PlacementUtils.countExtra(0, 0.05f, 1), AgresticBlocks.IRONWOOD_SAPLING.block()));
 
         // Olive
-        register(context, OLIVE_TREE, featureLookup.getOrThrow(AgresticConfiguredFeatures.OLIVE_TREE), NoiseBasedCountPlacement.of(0, 0.05f, 1), PlacementUtils.filteredByBlockSurvival(AgresticBlocks.OLIVE_SAPLING.block()));
+        register(context, OLIVE_TREE, featureLookup.getOrThrow(AgresticConfiguredFeatures.OLIVE_TREE), VegetationPlacements.treePlacement(PlacementUtils.countExtra(0, 0.05f, 1), AgresticBlocks.OLIVE_SAPLING.block()));
     }
 
     private static void register(BootstrapContext<PlacedFeature> context, ResourceKey<PlacedFeature> key, Holder<ConfiguredFeature<?, ?>> configuration, List<PlacementModifier> modifiers) {

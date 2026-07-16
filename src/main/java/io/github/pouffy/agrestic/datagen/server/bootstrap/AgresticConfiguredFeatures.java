@@ -6,15 +6,14 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.FancyFoliagePlacer;
-import net.minecraft.world.level.levelgen.feature.foliageplacers.PineFoliagePlacer;
+import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
-import net.minecraft.world.level.levelgen.feature.trunkplacers.DarkOakTrunkPlacer;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 
 public class AgresticConfiguredFeatures {
@@ -26,24 +25,24 @@ public class AgresticConfiguredFeatures {
     }
 
     public static void bootstrap(BootstrapContext<ConfiguredFeature<?, ?>> context) {
-        // Iron Wood Tree
-        register(context, IRONWOOD_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(AgresticBlocks.IRONWOOD.log().block()),
-                new StraightTrunkPlacer(10, 2, 0),
-                BlockStateProvider.simple(AgresticBlocks.IRONWOOD.leaves().block()),
-                new PineFoliagePlacer(ConstantInt.of(3),ConstantInt.of(0), ConstantInt.of(3)),
-                new TwoLayersFeatureSize(3, 1, 2)
-        ).build());
+        // Ironwood Tree
+        register(context, IRONWOOD_TREE, Feature.TREE, createStraightBlobTree(AgresticBlocks.IRONWOOD.log().block(), AgresticBlocks.IRONWOOD.leaves().block(), 6, 7, 0, 2).ignoreVines().build());
 
         // Olive Tree
-        register(context, OLIVE_TREE, Feature.TREE, new TreeConfiguration.TreeConfigurationBuilder(
-                BlockStateProvider.simple(AgresticBlocks.OLIVE.log().block()),
-                new DarkOakTrunkPlacer(4, 2, 2),
-                BlockStateProvider.simple(AgresticBlocks.OLIVE.leaves().block()),
-                new FancyFoliagePlacer(ConstantInt.of(2), ConstantInt.of(3),3),
-                new TwoLayersFeatureSize(3, 0, 2)
-        ).build());
+        register(context, OLIVE_TREE, Feature.TREE, createStraightBlobTree(AgresticBlocks.OLIVE.log().block(), AgresticBlocks.OLIVE.leaves().block(), 4, 3, 0, 2).ignoreVines().build());
 
+    }
+
+    private static TreeConfiguration.TreeConfigurationBuilder createStraightBlobTree(
+            Block logBlock, Block leavesBlock, int baseHeight, int heightRandA, int heightRandB, int radius
+    ) {
+        return new TreeConfiguration.TreeConfigurationBuilder(
+                BlockStateProvider.simple(logBlock),
+                new StraightTrunkPlacer(baseHeight, heightRandA, heightRandB),
+                BlockStateProvider.simple(leavesBlock),
+                new BlobFoliagePlacer(ConstantInt.of(radius), ConstantInt.of(0), 3),
+                new TwoLayersFeatureSize(1, 0, 1)
+        );
     }
 
     private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature, FC configuration) {
