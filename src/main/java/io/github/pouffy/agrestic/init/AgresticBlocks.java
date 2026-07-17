@@ -37,6 +37,7 @@ public class AgresticBlocks {
 
     public static final BlockDefinition<CrushingTubBlock> CRUSHING_TUB = register("crushing_tub", () -> new CrushingTubBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)), new BlockProperties(new SelfBlockLootType(), ""));
     public static final BlockDefinition<EvaporatingBasinBlock> EVAPORATING_BASIN = register("evaporating_basin", () -> new EvaporatingBasinBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.TERRACOTTA).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)), new BlockProperties(new SelfBlockLootType(), ""));
+    public static final BlockDefinition<FluidBarrelBlock> FLUID_BARREL = register("fluid_barrel", () -> new FluidBarrelBlock(BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_PLANKS).noOcclusion().lightLevel(ILightEmitting.LIGHT_GETTER)), new BlockProperties(new SelfBlockLootType(), ""));
 
     public static final BlockDefinition<SaplingBlock> OLIVE_SAPLING = register("olive_sapling", () -> new SaplingBlock(AgresticTreeGrowers.OLIVE, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));
     public static final BlockDefinition<SaplingBlock> IRONWOOD_SAPLING = register("ironwood_sapling", () -> new SaplingBlock(AgresticTreeGrowers.IRONWOOD, BlockBehaviour.Properties.ofFullCopy(Blocks.OAK_SAPLING)));

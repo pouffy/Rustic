@@ -49,6 +49,7 @@ public class AgresticCreativeTab {
         add(AgresticBlocks.IRONWOOD_SAPLING);
         add(AgresticBlocks.CRUSHING_TUB);
         add(AgresticBlocks.EVAPORATING_BASIN);
+        add(AgresticBlocks.FLUID_BARREL);
         ///add(AgresticBlocks.UNFIRED_DRYING_BASIN);
         ///add(AgresticBlocks.STAKE);
         ///add(AgresticBlocks.ROPE);
