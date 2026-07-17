@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:fill_item",
+  "fluid": {
+    "amount": 250,
+    "tag": "agrestic:ironberry_juice"
+  },
+  "input": {
+    "item": "minecraft:glass_bottle"
+  },
+  "result": {
+    "count": 1,
+    "id": "agrestic:ironberry_juice_bottle"
+  }
+}

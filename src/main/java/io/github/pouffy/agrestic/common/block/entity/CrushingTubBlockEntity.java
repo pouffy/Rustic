@@ -15,11 +15,9 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.component.DataComponentMap;
-import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ItemParticleOption;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -30,25 +28,17 @@ import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.TooltipFlag;
-import net.minecraft.world.item.component.ItemContainerContents;
 import net.minecraft.world.item.crafting.SingleRecipeInput;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
-import net.neoforged.neoforge.fluids.IFluidTank;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
-import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.List;
-
+@SuppressWarnings("deprecation")
 public class CrushingTubBlockEntity extends BlockEntity {
 
     @Getter
@@ -69,7 +59,7 @@ public class CrushingTubBlockEntity extends BlockEntity {
             tank.setCapacity(getCapacity());
             if (tank.getSpace() < 0) tank.drain(-tank.getSpace(), IFluidHandler.FluidAction.EXECUTE);
         }
-        updateLight(this, tank);
+        ILightEmitting.updateLight(this, tank);
         markUpdated();
     }
 
@@ -164,18 +154,6 @@ public class CrushingTubBlockEntity extends BlockEntity {
         return InteractionResult.PASS;
     }
 
-    public static void updateLight(BlockEntity be, IFluidTank tank) {
-        Level level = be.getLevel();
-        if (level != null && !level.isClientSide) {
-            FluidStack fluid = tank.getFluid();
-            int light = fluid.isEmpty() ? 0 : fluid.getFluid().getFluidType().getLightLevel(fluid);
-            BlockState state = be.getBlockState();
-            if (light != state.getValue(ILightEmitting.LIGHT)) {
-                level.setBlock(be.getBlockPos(), state.setValue(ILightEmitting.LIGHT, light), Block.UPDATE_CLIENTS);
-            }
-        }
-    }
-
     @Override
     protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
         super.applyImplicitComponents(componentInput);
@@ -206,13 +184,13 @@ public class CrushingTubBlockEntity extends BlockEntity {
 
     public FluidStack getFluidStack() {
         var inv = getTank();
-        return inv == null ? FluidStack.EMPTY : inv.getFluid();
+        return inv.getFluid();
     }
 
     @Override
     public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.loadAdditional(tag, registries);
-        updateLight(this, this.tank.readFromNBT(registries, tag.getCompound("Tank")));
+        ILightEmitting.updateLight(this, this.tank.readFromNBT(registries, tag.getCompound("Tank")));
         this.container.deserializeNBT(registries, tag.getCompound("Container"));
     }
 
@@ -225,11 +203,12 @@ public class CrushingTubBlockEntity extends BlockEntity {
 
     private void markUpdated() {
         this.setChanged();
+        assert this.getLevel() != null;
         this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     @Override
-    public @NotNull CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
         return this.saveWithoutMetadata(registries);
     }
 

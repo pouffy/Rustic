@@ -1,0 +1,5 @@
+{
+  "multiplier": 2.0,
+  "owners": "#minecraft:fire",
+  "state_conditions": "east=false,south=false,north=false,west=false,up=false"
+}

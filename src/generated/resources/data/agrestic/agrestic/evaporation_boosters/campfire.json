@@ -1,0 +1,5 @@
+{
+  "multiplier": 2.0,
+  "owners": "#minecraft:campfires",
+  "state_conditions": "lit=true"
+}

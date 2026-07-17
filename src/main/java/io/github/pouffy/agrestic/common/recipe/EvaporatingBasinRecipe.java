@@ -11,7 +11,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.neoforged.neoforge.fluids.crafting.SizedFluidIngredient;
 
-public class EvaporatingBasinRecipe extends InWorldRecipe<FluidRecipeInput> {
+public class EvaporatingBasinRecipe extends InWorldRecipe<EvaporatingRecipeInput> {
     @Getter
     protected SizedFluidIngredient input;
     @Getter
@@ -30,7 +30,11 @@ public class EvaporatingBasinRecipe extends InWorldRecipe<FluidRecipeInput> {
     }
 
     @Override
-    public boolean matches(FluidRecipeInput input, Level level) {
-        return this.input.test(input.getFluid());
+    public boolean matches(EvaporatingRecipeInput input, Level level) {
+        boolean correctFluid = this.getInput().test(input.getFluid());
+
+        ItemStack storedStack = input.contained();
+
+        return correctFluid && (storedStack.isEmpty() || (ItemStack.isSameItemSameComponents(storedStack, output) && storedStack.getCount() + output.getCount() <= storedStack.getMaxStackSize()));
     }
 }

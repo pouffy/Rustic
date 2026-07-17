@@ -50,6 +50,16 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.basicItem(AgresticItems.TINY_IRON_DUST);
 
         this.bucket(AgresticItems.ALE_WORT_BUCKET);
+
+        this.bottle(AgresticItems.APPLE_JUICE_BOTTLE);
+        this.bottle(AgresticItems.GOLDEN_APPLE_JUICE_BOTTLE);
+        this.bottle(AgresticItems.GRAPE_JUICE_BOTTLE);
+        this.bottle(AgresticItems.SWEET_BERRY_JUICE_BOTTLE);
+        this.bottle(AgresticItems.IRONBERRY_JUICE_BOTTLE);
+        this.bottle(AgresticItems.ALE_WORT_BOTTLE);
+        this.bottle(AgresticItems.OLIVE_OIL_BOTTLE);
+        this.bottle(AgresticItems.VANTA_OIL_BOTTLE);
+
         this.herb(AgresticBlocks.ALOE_VERA::asItem);
         this.herb(AgresticBlocks.BLOOD_ORCHID::asItem);
         this.herb(AgresticBlocks.CHAMOMILE::asItem);
@@ -75,5 +85,9 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
 
     public ItemModelBuilder bucket(Supplier<? extends Item> item) {
         return this.basicItem(item, "bucket/" + itemName(item.get()).replace("_bucket", ""), "");
+    }
+
+    public ItemModelBuilder bottle(Supplier<? extends Item> item) {
+        return this.basicItem(item, "bottle/" + itemName(item.get()).replace("_bottle", ""), "");
     }
 }

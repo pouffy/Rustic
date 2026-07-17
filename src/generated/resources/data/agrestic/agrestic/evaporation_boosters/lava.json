@@ -1,0 +1,7 @@
+{
+  "multiplier": 2.5,
+  "owners": [
+    "minecraft:lava",
+    "minecraft:lava_cauldron"
+  ]
+}

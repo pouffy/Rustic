@@ -9,6 +9,7 @@ import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticEffects;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import net.minecraft.data.PackOutput;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemNameBlockItem;
 import net.neoforged.neoforge.registries.NeoForgeRegistries;
 
@@ -59,4 +60,6 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
 
         NeoForgeRegistries.FLUID_TYPES.registryKeySet().stream().filter((key) -> key.location().getNamespace().equals(Agrestic.MODID)).forEach((key) -> add("fluid_type.agrestic.%s".formatted(key.location().getPath()), transform(key.location())));
     }
+
+
 }

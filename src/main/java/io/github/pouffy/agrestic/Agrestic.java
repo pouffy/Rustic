@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.pouffydev.krystal_core.KrystalCore;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
+import io.github.pouffy.agrestic.common.data.EvaporationBoosterManager;
 import io.github.pouffy.agrestic.core.fluid.transfer.FluidContainerTransferManager;
 import io.github.pouffy.agrestic.init.*;
 import net.minecraft.Util;
@@ -36,6 +37,7 @@ public class Agrestic {
         KrystalCore.disableDebugFeatures();
         KrystalCore.enableHoneyFluid();
         FluidContainerTransferManager.INSTANCE.init();
+        EvaporationBoosterManager.INSTANCE.init();
         this.modEventBus = modEventBus;
         INSTANCE = this;
         this.registryHelper = new RegistryHelper(MODID, modEventBus);

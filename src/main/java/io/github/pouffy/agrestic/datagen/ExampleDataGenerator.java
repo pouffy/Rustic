@@ -9,10 +9,7 @@ import io.github.pouffy.agrestic.datagen.server.AgresticDatapackProvider;
 import io.github.pouffy.agrestic.datagen.server.ModAdvancementProvider;
 import io.github.pouffy.agrestic.datagen.server.loot.ModLootGenerator;
 import io.github.pouffy.agrestic.datagen.server.recipe.AgresticRecipeCollector;
-import io.github.pouffy.agrestic.datagen.server.tags.ModBiomeTagsProvider;
-import io.github.pouffy.agrestic.datagen.server.tags.ModBlockTagsProvider;
-import io.github.pouffy.agrestic.datagen.server.tags.ModEntityTypeTagsProvider;
-import io.github.pouffy.agrestic.datagen.server.tags.ModItemTagsProvider;
+import io.github.pouffy.agrestic.datagen.server.tags.*;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -44,6 +41,7 @@ public class ExampleDataGenerator {
 
         ModBlockTagsProvider blockTags = new ModBlockTagsProvider(packOutput, lookupProvider, existingFileHelper);
         ModItemTagsProvider itemTags = new ModItemTagsProvider(packOutput, lookupProvider, blockTags.contentsGetter(), existingFileHelper);
+        ModFluidTagsProvider fluidTags = new ModFluidTagsProvider(packOutput, lookupProvider, existingFileHelper);
         ModEntityTypeTagsProvider entityTypeTags = new ModEntityTypeTagsProvider(packOutput, lookupProvider, existingFileHelper);
         ModBiomeTagsProvider biomeTags = new ModBiomeTagsProvider(packOutput, lookupProvider, existingFileHelper);
 
@@ -58,6 +56,7 @@ public class ExampleDataGenerator {
 
         generator.addProvider(server, blockTags);
         generator.addProvider(server, itemTags);
+        generator.addProvider(server, fluidTags);
         generator.addProvider(server, entityTypeTags);
         generator.addProvider(server, biomeTags);
 

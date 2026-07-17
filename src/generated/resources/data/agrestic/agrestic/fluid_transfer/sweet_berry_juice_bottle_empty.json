@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:empty_item",
+  "fluid": {
+    "amount": 250,
+    "id": "agrestic:sweet_berry_juice"
+  },
+  "input": {
+    "item": "agrestic:sweet_berry_juice_bottle"
+  },
+  "result": {
+    "count": 1,
+    "id": "minecraft:glass_bottle"
+  }
+}

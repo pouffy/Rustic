@@ -72,16 +72,14 @@ public class AgresticCreativeTab {
         add(AgresticItems.TINY_IRON_DUST);
         ///add(AgresticItems.TINY_GLOWSTONE_DUST);
         //Drinks
-        ///add(AgresticItems.IRONBERRY_JUICE);
-        ///add(AgresticItems.VANTA_OIL);
-        ///add(AgresticItems.ALE_WORT);
-        ///add(AgresticItems.OLIVE_OIL);
-        ///add(AgresticItems.SUGAR_CANE_JUICE);
-        ///add(AgresticItems.GOLDEN_APPLE_JUICE);
-        ///add(AgresticItems.APPLE_JUICE);
-        ///add(AgresticItems.GLOW_BERRY_JUICE);
-        ///add(AgresticItems.SWEET_BERRY_JUICE);
-        ///add(AgresticItems.GRAPE_JUICE);
+        add(AgresticItems.IRONBERRY_JUICE_BOTTLE);
+        add(AgresticItems.VANTA_OIL_BOTTLE);
+        add(AgresticItems.ALE_WORT_BOTTLE);
+        add(AgresticItems.OLIVE_OIL_BOTTLE);
+        add(AgresticItems.GOLDEN_APPLE_JUICE_BOTTLE);
+        add(AgresticItems.APPLE_JUICE_BOTTLE);
+        add(AgresticItems.SWEET_BERRY_JUICE_BOTTLE);
+        add(AgresticItems.GRAPE_JUICE_BOTTLE);
         //Buckets
         ///add(AgresticItems.IRONBERRY_JUICE_BUCKET);
         ///add(AgresticItems.VANTA_OIL_BUCKET);

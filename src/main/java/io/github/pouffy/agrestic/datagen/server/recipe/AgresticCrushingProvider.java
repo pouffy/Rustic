@@ -15,6 +15,7 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.level.material.Fluids;
 import net.neoforged.neoforge.fluids.FluidStack;
 
 import java.util.concurrent.CompletableFuture;
@@ -32,7 +33,7 @@ public class AgresticCrushingProvider extends AgresticRecipeProvider {
     protected void buildRecipes(RecipeOutput output) {
         recipe(new FluidStack(AgresticFluids.OLIVE_OIL, 250), Ingredient.of(AgresticItems.OLIVES), output, "olives");
         recipe(new FluidStack(AgresticFluids.IRONBERRY_JUICE, 250), Ingredient.of(AgresticItems.IRONBERRIES), output, "ironberries");
-        //recipe(new FluidStack(Fluids.WATER, 250), Ingredient.of(Items.REEDS), new ItemStack(Items.SUGAR, 2), output, "reeds");
+        recipe(new FluidStack(Fluids.WATER, 250), Ingredient.of(Items.SUGAR_CANE), new ChanceResult(new ItemStack(Items.SUGAR, 2), 1), output, "sugar_cane");
         recipe(new FluidStack(AgresticFluids.SWEET_BERRY_JUICE, 250), Ingredient.of(Items.SWEET_BERRIES), output, "sweet_berries");
         recipe(new FluidStack(AgresticFluids.GRAPE_JUICE, 250), Ingredient.of(AgresticItems.GRAPES), output, "grapes");
         //recipe(new FluidStack(AgresticFluids.APPLE_JUICE, 250), Ingredient.of(Items.APPLE), new ItemStack(AgresticBlocks.APPLE_SEEDS), output, "apple");
