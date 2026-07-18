@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:filling",
+  "empty": {
+    "item": "minecraft:glass_bottle"
+  },
+  "fluid": {
+    "amount": 250,
+    "fluid": "agrestic:vanta_oil"
+  },
+  "full": {
+    "count": 1,
+    "id": "agrestic:vanta_oil_bottle"
+  }
+}

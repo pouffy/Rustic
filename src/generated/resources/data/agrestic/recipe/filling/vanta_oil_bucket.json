@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:filling",
+  "empty": {
+    "item": "minecraft:bucket"
+  },
+  "fluid": {
+    "amount": 1000,
+    "fluid": "agrestic:vanta_oil"
+  },
+  "full": {
+    "count": 1,
+    "id": "agrestic:vanta_oil_bucket"
+  }
+}

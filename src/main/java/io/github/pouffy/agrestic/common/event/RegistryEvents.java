@@ -1,10 +1,8 @@
 package io.github.pouffy.agrestic.common.event;
 
-import com.pouffydev.krystal_core.foundation.event.AddBoatTypesEvent;
 import com.pouffydev.krystal_core.foundation.registry.definition.block.BlockDefinition;
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
-import io.github.pouffy.agrestic.core.fluid.transfer.FluidTransferSyncPacket;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
 import io.github.pouffy.agrestic.init.AgresticFlammables;
 import io.github.pouffy.agrestic.init.AgresticFluids;
@@ -19,7 +17,6 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.BoatItem;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ProjectileItem;
 import net.minecraft.world.level.block.DispenserBlock;
 import net.minecraft.world.level.block.FlowerPotBlock;
@@ -68,7 +65,6 @@ public class RegistryEvents {
     public static void registerPayloads(RegisterPayloadHandlersEvent event) {
         final PayloadRegistrar registrar = event.registrar(Agrestic.MODID).versioned("1.0");
 
-        registrar.playToClient(FluidTransferSyncPacket.TYPE, FluidTransferSyncPacket.STREAM_CODEC, FluidTransferSyncPacket::handle);
         registrar.playToClient(ShameFXPayload.TYPE, ShameFXPayload.STREAM_CODEC, ShameFXPayload::handle);
 
         registrar.playToServer(FirePowerAttackPayload.TYPE, FirePowerAttackPayload.STREAM_CODEC, FirePowerAttackPayload::handle);

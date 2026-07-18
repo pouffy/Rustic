@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:filling",
+  "empty": {
+    "item": "minecraft:glass_bottle"
+  },
+  "fluid": {
+    "amount": 250,
+    "fluid": "krystal_core:honey"
+  },
+  "full": {
+    "count": 1,
+    "id": "minecraft:honey_bottle"
+  }
+}

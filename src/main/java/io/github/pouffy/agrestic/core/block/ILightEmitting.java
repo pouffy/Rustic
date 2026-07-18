@@ -8,6 +8,7 @@ import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.IFluidTank;
 
+import java.util.Objects;
 import java.util.function.ToIntFunction;
 
 public interface ILightEmitting {
@@ -18,7 +19,7 @@ public interface ILightEmitting {
         Level level = be.getLevel();
         if (level != null && !level.isClientSide) {
             FluidStack fluid = tank.getFluid();
-            int light = fluid.isEmpty() ? 0 : fluid.getFluid().getFluidType().getLightLevel(fluid);
+            int light = fluid.isEmpty() ? 0 : Objects.requireNonNull(fluid.getFluid()).getFluidType().getLightLevel(fluid);
             BlockState state = be.getBlockState();
             if (light != state.getValue(ILightEmitting.LIGHT)) {
                 level.setBlock(be.getBlockPos(), state.setValue(ILightEmitting.LIGHT, light), Block.UPDATE_CLIENTS);

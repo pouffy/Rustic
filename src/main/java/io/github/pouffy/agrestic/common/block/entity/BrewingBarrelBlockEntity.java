@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic.common.block.entity;
 
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
+import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
 import io.github.pouffy.agrestic.core.fluid.CombinedFluidTank;
 import io.github.pouffy.agrestic.core.item.AgresticItemContainer;
@@ -9,8 +10,8 @@ import lombok.Getter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
@@ -20,7 +21,7 @@ import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrewingBarrelBlockEntity extends BlockEntity {
+public class BrewingBarrelBlockEntity extends AgresticBlockEntity {
 
     @Getter
     protected final CombinedFluidTank tanks;
@@ -43,7 +44,7 @@ public class BrewingBarrelBlockEntity extends BlockEntity {
         this.resultTank = new AgresticFluidTank(8000, this::onOutputChanged).forbidInsertion();
         this.auxiliaryTank = new AgresticFluidTank(1000, this::onAuxiliaryChanged);
         this.tanks = new CombinedFluidTank(this.inputTank, this.resultTank, this.auxiliaryTank);
-        this.container = new AgresticItemContainer(6, (stack) -> this.markUpdated());
+        this.container = new AgresticItemContainer(6, this::onItemsChanged);
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -95,10 +96,14 @@ public class BrewingBarrelBlockEntity extends BlockEntity {
         tag.putInt("Progress", this.progress);
     }
 
-    private void markUpdated() {
-        this.setChanged();
-        assert this.getLevel() != null;
-        this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
     }
 
     public List<ItemStack> getAllStacks() {

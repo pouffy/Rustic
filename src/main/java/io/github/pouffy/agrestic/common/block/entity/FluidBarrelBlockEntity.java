@@ -1,8 +1,9 @@
 package io.github.pouffy.agrestic.common.block.entity;
 
+import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
-import io.github.pouffy.agrestic.core.fluid.transfer.FluidTransferHelper;
+import io.github.pouffy.agrestic.core.fluid.FluidHelper;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
 import lombok.Getter;
 import net.minecraft.core.BlockPos;
@@ -16,15 +17,13 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class FluidBarrelBlockEntity extends BlockEntity {
+public class FluidBarrelBlockEntity extends AgresticBlockEntity {
     @Getter
     protected final AgresticFluidTank tank;
 
@@ -48,13 +47,6 @@ public class FluidBarrelBlockEntity extends BlockEntity {
     }
 
     public ItemInteractionResult interact(Player player, InteractionHand hand, Direction side) {
-        if (level == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        ItemStack heldItem = player.getItemInHand(hand);
-        if (heldItem != ItemStack.EMPTY) {
-            if (FluidTransferHelper.interactWithTank(level, worldPosition, player, hand, side, side)) {
-                return ItemInteractionResult.sidedSuccess(level.isClientSide);
-            }
-        }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
@@ -62,11 +54,11 @@ public class FluidBarrelBlockEntity extends BlockEntity {
         if (level == null) return InteractionResult.PASS;
         if (player.isShiftKeyDown() && this.getFluidStack().getAmount() > 0) {
             FluidStack drained = this.tank.drain(getCapacity(), IFluidHandler.FluidAction.EXECUTE);
-            SoundEvent soundevent = FluidTransferHelper.getEmptySound(drained);
+            SoundEvent soundevent = FluidHelper.getEmptySound(drained);
             if (soundevent != null) {
                 level.playSound(null, this.worldPosition, soundevent, SoundSource.BLOCKS, 1F, 1F);
             }
-            FluidTransferHelper.displayDrained(player, drained);
+            FluidHelper.displayDrained(player, drained);
             markUpdated();
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -75,12 +67,6 @@ public class FluidBarrelBlockEntity extends BlockEntity {
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, AgresticBlockEntities.FLUID_BARREL.get(), (be, context) -> be.tank);
-    }
-
-    @Override
-    public final void setRemoved() {
-        super.setRemoved();
-        invalidateCapabilities();
     }
 
     public FluidStack getFluidStack() {
@@ -98,12 +84,6 @@ public class FluidBarrelBlockEntity extends BlockEntity {
     public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
         super.saveAdditional(tag, registries);
         tag.put("Tank", this.tank.writeToNBT(registries, new CompoundTag()));
-    }
-
-    private void markUpdated() {
-        this.setChanged();
-        assert this.getLevel() != null;
-        this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     @Override

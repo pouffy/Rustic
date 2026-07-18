@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:emptying",
+  "empty": {
+    "count": 1,
+    "id": "minecraft:glass_bottle"
+  },
+  "fluid": {
+    "amount": 250,
+    "id": "agrestic:grape_juice"
+  },
+  "full": {
+    "item": "agrestic:grape_juice_bottle"
+  }
+}

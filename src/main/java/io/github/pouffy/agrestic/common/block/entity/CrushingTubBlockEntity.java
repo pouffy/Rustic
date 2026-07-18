@@ -1,8 +1,9 @@
 package io.github.pouffy.agrestic.common.block.entity;
 
+import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
-import io.github.pouffy.agrestic.core.fluid.transfer.FluidTransferHelper;
+import io.github.pouffy.agrestic.core.fluid.FluidHelper;
 import io.github.pouffy.agrestic.core.item.DisplayedItemContainer;
 import io.github.pouffy.agrestic.core.item.StoredFluidStack;
 import io.github.pouffy.agrestic.core.item.StoredItemStack;
@@ -39,7 +40,7 @@ import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
 @SuppressWarnings("deprecation")
-public class CrushingTubBlockEntity extends BlockEntity {
+public class CrushingTubBlockEntity extends AgresticBlockEntity {
 
     @Getter
     protected final AgresticFluidTank tank;
@@ -50,7 +51,7 @@ public class CrushingTubBlockEntity extends BlockEntity {
     public CrushingTubBlockEntity(BlockPos pos, BlockState blockState) {
         super(AgresticBlockEntities.CRUSHING_TUB.get(), pos, blockState);
         tank = new AgresticFluidTank(getCapacity(), this::onFluidStackChanged).forbidInsertion();
-        container = new DisplayedItemContainer(1, (stack) -> this.markUpdated());
+        container = new DisplayedItemContainer(1, this::onItemsChanged);
     }
 
     protected void onFluidStackChanged(FluidStack newFluids) {
@@ -70,12 +71,6 @@ public class CrushingTubBlockEntity extends BlockEntity {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, AgresticBlockEntities.CRUSHING_TUB.get(), (be, context) -> be.tank);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, AgresticBlockEntities.CRUSHING_TUB.get(), (be, context) -> be.container);
-    }
-
-    @Override
-    public final void setRemoved() {
-        super.setRemoved();
-        invalidateCapabilities();
     }
 
     public void crush() {
@@ -114,20 +109,16 @@ public class CrushingTubBlockEntity extends BlockEntity {
         if (level == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
         ItemStack heldItem = player.getItemInHand(hand);
         if (heldItem != ItemStack.EMPTY) {
-            if (FluidTransferHelper.interactWithTank(level, worldPosition, player, hand, side, side)) {
+            if (this.container.getStackInSlot(0).isEmpty()) {
+                player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
+                markUpdated();
                 return ItemInteractionResult.sidedSuccess(level.isClientSide);
             } else {
-                if (this.container.getStackInSlot(0).isEmpty()) {
+                if (this.container.getStackInSlot(0).is(heldItem.getItem())) {
                     player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
                     markUpdated();
                     return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                } else {
-                    if (this.container.getStackInSlot(0).is(heldItem.getItem())) {
-                        player.setItemInHand(hand, this.container.insertItem(0, heldItem, false));
-                        markUpdated();
-                        return ItemInteractionResult.sidedSuccess(level.isClientSide);
-                    } else return ItemInteractionResult.FAIL;
-                }
+                } else return ItemInteractionResult.FAIL;
             }
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
@@ -137,11 +128,11 @@ public class CrushingTubBlockEntity extends BlockEntity {
         if (level == null) return InteractionResult.PASS;
         if (player.isShiftKeyDown() && this.getFluidStack().getAmount() > 0) {
             FluidStack drained = this.tank.drain(getCapacity(), IFluidHandler.FluidAction.EXECUTE);
-            SoundEvent soundevent = FluidTransferHelper.getEmptySound(drained);
+            SoundEvent soundevent = FluidHelper.getEmptySound(drained);
             if (soundevent != null) {
                 level.playSound(null, this.worldPosition, soundevent, SoundSource.BLOCKS, 1F, 1F);
             }
-            FluidTransferHelper.displayDrained(player, drained);
+            FluidHelper.displayDrained(player, drained);
             markUpdated();
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -199,12 +190,6 @@ public class CrushingTubBlockEntity extends BlockEntity {
         super.saveAdditional(tag, registries);
         tag.put("Tank", this.tank.writeToNBT(registries, new CompoundTag()));
         tag.put("Container", this.container.serializeNBT(registries));
-    }
-
-    private void markUpdated() {
-        this.setChanged();
-        assert this.getLevel() != null;
-        this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     @Override

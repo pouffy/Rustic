@@ -1,0 +1,14 @@
+{
+  "type": "agrestic:emptying",
+  "empty": {
+    "count": 1,
+    "id": "minecraft:bucket"
+  },
+  "fluid": {
+    "amount": 1000,
+    "id": "krystal_core:honey"
+  },
+  "full": {
+    "item": "krystal_core:honey_bucket"
+  }
+}

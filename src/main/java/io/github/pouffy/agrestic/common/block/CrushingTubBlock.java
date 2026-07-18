@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic.common.block;
 import com.mojang.serialization.MapCodec;
 import io.github.pouffy.agrestic.common.block.entity.CrushingTubBlockEntity;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
+import io.github.pouffy.agrestic.core.fluid.FluidHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -83,8 +84,12 @@ public class CrushingTubBlock extends BaseEntityBlock implements ILightEmitting 
 
     @Override
     protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
-        if (level.getBlockEntity(pos) instanceof CrushingTubBlockEntity crushingTubBlockEntity) {
-            return crushingTubBlockEntity.interact(player, hand, hitResult.getDirection());
+        if (level.getBlockEntity(pos) instanceof CrushingTubBlockEntity be) {
+            if (!stack.isEmpty()) {
+                if (FluidHelper.tryFillItemFromBE(level, player, hand, stack, be))
+                    return ItemInteractionResult.SUCCESS;
+            }
+            return be.interact(player, hand, hitResult.getDirection());
         }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }

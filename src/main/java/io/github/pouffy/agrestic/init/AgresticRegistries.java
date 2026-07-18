@@ -2,7 +2,6 @@ package io.github.pouffy.agrestic.init;
 
 import com.mojang.serialization.Lifecycle;
 import io.github.pouffy.agrestic.Agrestic;
-import io.github.pouffy.agrestic.core.fluid.transfer.FluidTransferType;
 import net.minecraft.core.MappedRegistry;
 import net.minecraft.core.Registry;
 import net.minecraft.resources.ResourceKey;
@@ -14,12 +13,9 @@ import net.neoforged.neoforge.registries.RegistryBuilder;
 @EventBusSubscriber
 public class AgresticRegistries {
 
-    public static final ResourceKey<Registry<FluidTransferType<?>>> FLUID_TRANSFER_TYPE_KEY = createRegistryKey("fluid_container_transfer_type");
-    public static final Registry<FluidTransferType<?>> FLUID_TRANSFER_TYPE_REGISTRY = makeSyncedRegistry(FLUID_TRANSFER_TYPE_KEY);
-
     @SubscribeEvent
     public static void newRegistry(NewRegistryEvent event) {
-        event.register(FLUID_TRANSFER_TYPE_REGISTRY);
+
     }
 
     private static <T> ResourceKey<Registry<T>> createRegistryKey(String name) {

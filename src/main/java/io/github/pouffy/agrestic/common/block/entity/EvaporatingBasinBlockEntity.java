@@ -3,9 +3,10 @@ package io.github.pouffy.agrestic.common.block.entity;
 import io.github.pouffy.agrestic.common.data.EvaporationBoosterManager;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingRecipeInput;
+import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
 import io.github.pouffy.agrestic.core.block.ILightEmitting;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidTank;
-import io.github.pouffy.agrestic.core.fluid.transfer.FluidTransferHelper;
+import io.github.pouffy.agrestic.core.fluid.FluidHelper;
 import io.github.pouffy.agrestic.core.item.DisplayedItemContainer;
 import io.github.pouffy.agrestic.core.recipe.RecipeSearch;
 import io.github.pouffy.agrestic.init.AgresticBlockEntities;
@@ -26,14 +27,13 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.neoforged.neoforge.capabilities.Capabilities;
 import net.neoforged.neoforge.capabilities.RegisterCapabilitiesEvent;
 import net.neoforged.neoforge.fluids.FluidStack;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 
-public class EvaporatingBasinBlockEntity extends BlockEntity {
+public class EvaporatingBasinBlockEntity extends AgresticBlockEntity {
     @Getter
     protected final AgresticFluidTank tank;
     @Getter
@@ -43,7 +43,7 @@ public class EvaporatingBasinBlockEntity extends BlockEntity {
     public EvaporatingBasinBlockEntity(BlockPos pos, BlockState blockState) {
         super(AgresticBlockEntities.EVAPORATING_BASIN.get(), pos, blockState);
         tank = new AgresticFluidTank(getCapacity(), this::onFluidStackChanged);
-        container = new DisplayedItemContainer(1, (stack) -> this.markUpdated()).forbidInsertion();
+        container = new DisplayedItemContainer(1, this::onItemsChanged).forbidInsertion();
     }
 
     protected void onFluidStackChanged(FluidStack newFluids) {
@@ -121,13 +121,6 @@ public class EvaporatingBasinBlockEntity extends BlockEntity {
     }
 
     public ItemInteractionResult interact(Player player, InteractionHand hand, Direction side) {
-        if (level == null) return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
-        ItemStack heldItem = player.getItemInHand(hand);
-        if (heldItem != ItemStack.EMPTY) {
-            if (FluidTransferHelper.interactWithTank(level, worldPosition, player, hand, side, side)) {
-                return ItemInteractionResult.sidedSuccess(level.isClientSide);
-            }
-        }
         return ItemInteractionResult.PASS_TO_DEFAULT_BLOCK_INTERACTION;
     }
 
@@ -135,11 +128,11 @@ public class EvaporatingBasinBlockEntity extends BlockEntity {
         if (level == null) return InteractionResult.PASS;
         if (player.isShiftKeyDown() && this.getFluidStack().getAmount() > 0) {
             FluidStack drained = this.tank.drain(getCapacity(), IFluidHandler.FluidAction.EXECUTE);
-            SoundEvent soundevent = FluidTransferHelper.getEmptySound(drained);
+            SoundEvent soundevent = FluidHelper.getEmptySound(drained);
             if (soundevent != null) {
                 level.playSound(null, this.worldPosition, soundevent, SoundSource.BLOCKS, 1F, 1F);
             }
-            FluidTransferHelper.displayDrained(player, drained);
+            FluidHelper.displayDrained(player, drained);
             markUpdated();
             return InteractionResult.sidedSuccess(level.isClientSide);
         }
@@ -155,12 +148,6 @@ public class EvaporatingBasinBlockEntity extends BlockEntity {
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, AgresticBlockEntities.EVAPORATING_BASIN.get(), (be, context) -> be.tank);
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, AgresticBlockEntities.EVAPORATING_BASIN.get(), (be, context) -> be.container);
-    }
-
-    @Override
-    public final void setRemoved() {
-        super.setRemoved();
-        invalidateCapabilities();
     }
 
     public FluidStack getFluidStack() {
@@ -182,12 +169,6 @@ public class EvaporatingBasinBlockEntity extends BlockEntity {
         tag.put("Tank", this.tank.writeToNBT(registries, new CompoundTag()));
         tag.put("Container", this.container.serializeNBT(registries));
         tag.putFloat("Progress", this.progress);
-    }
-
-    private void markUpdated() {
-        this.setChanged();
-        assert this.getLevel() != null;
-        this.getLevel().sendBlockUpdated(this.getBlockPos(), this.getBlockState(), this.getBlockState(), 3);
     }
 
     @Override
