@@ -57,7 +57,7 @@ public class CrushingTubRenderer implements BlockEntityRenderer<CrushingTubBlock
             ms.pushPose();
             float min = 2f / 16f;
             float max = 14 / 16f;
-            float depth = (2 / 16f) + ((fluid.getAmount()) / (float)capacity) * (4 / 16f);
+            float depth = (2 / 16f) + ((fluid.getAmount()) / (float)capacity) * (6 / 16f);
             ClientFluidHelper.renderStillTiledFace(Direction.UP, min, min, max, max, depth, buffer.getBuffer(RenderType.entityTranslucentCull(TextureAtlas.LOCATION_BLOCKS)), ms, light, color, fluidTexture);
             ms.popPose();
         }
