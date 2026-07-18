@@ -114,6 +114,6 @@ public class AgresticItems {
     }
 
     public static <T extends Item> ItemDefinition<T> registerBottle(String name, Function<Item.Properties, T> constructor) {
-        return register(name + "_bottle", constructor, "Bottle of %s".formatted(TextUtils.transform(name)));
+        return register(name + "_bottle", (p) -> constructor.apply(p.craftRemainder(Items.GLASS_BOTTLE)), "Bottle of %s".formatted(TextUtils.transform(name)));
     }
 }
