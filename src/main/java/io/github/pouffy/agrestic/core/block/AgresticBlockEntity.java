@@ -28,6 +28,9 @@ public abstract class AgresticBlockEntity extends BlockEntity {
         invalidateCapabilities();
     }
 
+    public abstract void serverTick();
+    public abstract void clientTick();
+
     public void onItemsChanged(ItemStack stack) {
         this.markUpdated();
     }

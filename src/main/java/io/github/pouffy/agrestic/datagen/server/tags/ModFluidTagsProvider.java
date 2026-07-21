@@ -29,6 +29,15 @@ public class ModFluidTagsProvider extends FluidTagsProvider {
         addToTag(AgresticTags.ALE_WORT, AgresticFluids.ALE_WORT.get(), AgresticFluids.FLOWING_ALE_WORT.get());
         addToTag(AgresticTags.OLIVE_OIL, AgresticFluids.OLIVE_OIL.get(), AgresticFluids.FLOWING_OLIVE_OIL.get());
         addToTag(AgresticTags.VANTA_OIL, AgresticFluids.VANTA_OIL.get(), AgresticFluids.FLOWING_VANTA_OIL.get());
+
+        addToTag(AgresticTags.ALE, AgresticFluids.ALE.get(), AgresticFluids.FLOWING_ALE.get());
+        addToTag(AgresticTags.CIDER, AgresticFluids.CIDER.get(), AgresticFluids.FLOWING_CIDER.get());
+        addToTag(AgresticTags.IRON_WINE, AgresticFluids.IRON_WINE.get(), AgresticFluids.FLOWING_IRON_WINE.get());
+        addToTag(AgresticTags.MEAD, AgresticFluids.MEAD.get(), AgresticFluids.FLOWING_MEAD.get());
+        addToTag(AgresticTags.SWEET_BERRY_WINE, AgresticFluids.SWEET_BERRY_WINE.get(), AgresticFluids.FLOWING_SWEET_BERRY_WINE.get());
+        addToTag(AgresticTags.WINE, AgresticFluids.WINE.get(), AgresticFluids.FLOWING_WINE.get());
+        addToTag(AgresticTags.AMBROSIA, AgresticFluids.AMBROSIA.get(), AgresticFluids.FLOWING_AMBROSIA.get());
+
     }
 
     protected final void addToTag(TagKey<Fluid> tagKey, Fluid... fluids) {

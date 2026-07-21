@@ -3,14 +3,15 @@ package io.github.pouffy.agrestic.init;
 import com.pouffydev.krystal_core.foundation.registry.definition.item.ItemDefinition;
 import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.AgresticEnumParams;
-import io.github.pouffy.agrestic.common.item.ChilliItem;
-import io.github.pouffy.agrestic.common.item.DrinkableItem;
-import io.github.pouffy.agrestic.common.item.HerbItem;
-import io.github.pouffy.agrestic.common.item.TomatoItem;
+import io.github.pouffy.agrestic.common.item.*;
 import io.github.pouffy.agrestic.core.TextUtils;
+import io.github.pouffy.agrestic.core.booze.ExtraBoozeRunnables;
 import io.github.pouffy.agrestic.core.item.AgresticBucketItem;
 import io.github.pouffy.agrestic.core.item.AgresticFoodItem;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.*;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.Fluid;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredItem;
@@ -18,6 +19,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -79,6 +81,40 @@ public class AgresticItems {
     public static final ItemDefinition<DrinkableItem> ALE_WORT_BOTTLE = registerBottle("ale_wort", (p) -> new DrinkableItem(p.food(AgresticFoodValues.ALE_WORT_BOTTLE).stacksTo(16)));
     public static final ItemDefinition<DrinkableItem> OLIVE_OIL_BOTTLE = registerBottle("olive_oil", (p) -> new DrinkableItem(p.food(AgresticFoodValues.OLIVE_OIL_BOTTLE).stacksTo(16)));
     public static final ItemDefinition<DrinkableItem> VANTA_OIL_BOTTLE = registerBottle("vanta_oil", (p) -> new DrinkableItem(p.food(AgresticFoodValues.VANTA_OIL_BOTTLE).stacksTo(16)));
+
+    public static final ItemDefinition<BoozeBottleItem> ALE_BOTTLE = register("ale_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::ale).setInebriationChance(0.5f), "Bottle of Ale");
+    public static final ItemDefinition<BoozeBottleItem> CIDER_BOTTLE = register("cider_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::cider).setInebriationChance(0.5f), "Bottle of Cider");
+    public static final ItemDefinition<BoozeBottleItem> IRON_WINE_BOTTLE = register("iron_wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::ironWine).setInebriationChance(0.5f).withRunnable(ExtraBoozeRunnables::ironWine), "Bottle of Iron Wine");
+    public static final ItemDefinition<BoozeBottleItem> MEAD_BOTTLE = register("mead_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::mead).setInebriationChance(0.5f), "Bottle of Mead");
+    public static final ItemDefinition<BoozeBottleItem> SWEET_BERRY_WINE_BOTTLE = register("sweet_berry_wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::sweetBerryWine).setInebriationChance(0.85f).withRunnable(ExtraBoozeRunnables::sweetBerryWine), "Bottle of Sweet Berry Wine");
+    public static final ItemDefinition<BoozeBottleItem> WINE_BOTTLE = register("wine_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::wine).setInebriationChance(0.5f).withRunnable(ExtraBoozeRunnables::wine), "Bottle of Wine");
+    public static final ItemDefinition<BoozeBottleItem> AMBROSIA_BOTTLE = register("ambrosia_bottle", (p) -> new BoozeBottleItem(p.craftRemainder(Items.GLASS_BOTTLE), AgresticFoodValues::ambrosia) {
+        @Override
+        public float getInebriationChance() {
+            return 1.0F;
+        }
+
+        public Consumer<BoozeConsumptionContext> getRunnable() {
+            return ExtraBoozeRunnables::ambrosia;
+        }
+
+        @Override
+        public void inebriate(Level world, Player player, float quality) {
+            int duration = (quality  >= 0.5f)
+                    ? ((int) (12000 * (Math.max(1 - Math.abs(quality - 0.75F), 0.5F))))
+                    : ((int) (12000 * (Math.max(1 - (quality * 0.5F), 0.5F))));
+            MobEffectInstance tipsyEffect = player.getEffect(AgresticEffects.TIPSY);
+            if (world.random.nextFloat() < getInebriationChance()) {
+                if (tipsyEffect == null) {
+                    int amp = (quality > 0.99F) ? 1 : 0;
+                    player.addEffect(new MobEffectInstance(AgresticEffects.TIPSY, duration, amp, false, false));
+                } else if (tipsyEffect.getAmplifier() < 3) {
+                    int newAmp = Math.min(tipsyEffect.getAmplifier() + ((quality > 0.99F) ? 2 : 1), 3);
+                    player.addEffect(new MobEffectInstance(AgresticEffects.TIPSY, Math.max(duration, tipsyEffect.getDuration()), newAmp, false, false));
+                }
+            }
+        }
+    }, "Bottle of Ambrosia");
 
     public static void staticInit(IEventBus bus) {
         HELPER.register(bus);

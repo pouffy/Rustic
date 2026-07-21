@@ -64,8 +64,8 @@ public class EmiFluidTransferRecipe extends BasicEmiRecipe {
     @Override
     public List<EmiStack> getOutputs() {
         return List.of(
-                recipe.map(filling -> EmiStack.of(filling.getResultItem(registries)), emptying -> EmiStack.EMPTY),
-                recipe.map(filling -> EmiStack.EMPTY, emptying -> EmiStack.of(emptying.getResultingFluid().getFluid(), emptying.getResultingFluid().getAmount()))
+                recipe.map(filling -> EmiStack.of(filling.getResultItem(registries, null)), emptying -> EmiStack.EMPTY),
+                recipe.map(filling -> EmiStack.EMPTY, emptying -> EmiStack.of(emptying.getResultingFluid(null).getFluid(), emptying.getResultingFluid(null).getAmount()))
         );
     }
 
@@ -78,13 +78,13 @@ public class EmiFluidTransferRecipe extends BasicEmiRecipe {
         widgets.add(FluidTankWidget.input(NeoForgeEmiIngredient.of(filling.getRequiredFluid()), 10, 15, filling.getRequiredFluid().amount()));
         widgets.addSlot(EmiIngredient.of(filling.getInput()), 30, 23);
         widgets.addTexture(AgresticEmiPlugin.ARROW_BG, 53, 23);
-        widgets.addSlot(EmiStack.of(filling.getResultItem(registries)), 80, 23).recipeContext(this);
+        widgets.addSlot(EmiStack.of(filling.getResultItem(registries, null)), 80, 23).recipeContext(this);
     }
 
     private void addEmptying(WidgetHolder widgets, EmptyingRecipe emptying) {
         widgets.addSlot(EmiIngredient.of(emptying.getInput()), 10, 23);
         widgets.addTexture(AgresticEmiPlugin.ARROW_BG, 33, 23);
-        widgets.add(FluidTankWidget.result(emptying.getResultingFluid(), 60, 15, emptying.getResultingFluid().getAmount())).recipeContext(this);
+        widgets.add(FluidTankWidget.result(emptying.getResultingFluid(null), 60, 15, emptying.getResultingFluid(null).getAmount())).recipeContext(this);
         widgets.addSlot(EmiStack.of(emptying.getResultItem(registries)), 80, 23);
     }
 

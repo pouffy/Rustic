@@ -32,6 +32,14 @@ public class AgresticTags {
     public static final TagKey<Fluid> OLIVE_OIL = createFluidTag("olive_oil");
     public static final TagKey<Fluid> VANTA_OIL = createFluidTag("vanta_oil");
 
+    public static final TagKey<Fluid> ALE = createFluidTag("ale");
+    public static final TagKey<Fluid> CIDER = createFluidTag("cider");
+    public static final TagKey<Fluid> IRON_WINE = createFluidTag("iron_wine");
+    public static final TagKey<Fluid> MEAD = createFluidTag("mead");
+    public static final TagKey<Fluid> SWEET_BERRY_WINE = createFluidTag("sweet_berry_wine");
+    public static final TagKey<Fluid> WINE = createFluidTag("wine");
+    public static final TagKey<Fluid> AMBROSIA = createFluidTag("ambrosia");
+
     public static final TagKey<EntityType<?>> DENSE_HERB_UNAFFECTED = createEntityTag("dense_herb_unaffected");
     public static final TagKey<EntityType<?>> PRICKLY_HERB_UNAFFECTED = createEntityTag("prickly_herb_unaffected");
 

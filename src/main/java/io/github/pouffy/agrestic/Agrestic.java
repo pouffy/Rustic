@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.pouffydev.krystal_core.KrystalCore;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
 import io.github.pouffy.agrestic.common.data.EvaporationBoosterManager;
+import io.github.pouffy.agrestic.compat.CompatEventHandler;
 import io.github.pouffy.agrestic.init.*;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
@@ -13,6 +14,7 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
 import net.neoforged.fml.loading.FMLEnvironment;
+import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Contract;
@@ -61,6 +63,8 @@ public class Agrestic {
         modContainer.registerConfig(ModConfig.Type.SERVER, AgresticConfig.serverSpec);
         modContainer.registerConfig(ModConfig.Type.CLIENT, AgresticConfig.clientSpec);
         modContainer.registerConfig(ModConfig.Type.COMMON, AgresticConfig.commonSpec);
+
+        CompatEventHandler.init(modEventBus, NeoForge.EVENT_BUS);
     }
 
     public static IEventBus getEventBus() {

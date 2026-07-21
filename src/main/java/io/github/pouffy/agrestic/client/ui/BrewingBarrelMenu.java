@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic.client.ui;
 
 import io.github.pouffy.agrestic.client.AgresticSprites;
+import io.github.pouffy.agrestic.client.ui.slot.FluidTransferInputSlot;
 import io.github.pouffy.agrestic.client.ui.slot.ResultSlot;
 import io.github.pouffy.agrestic.common.block.entity.BrewingBarrelBlockEntity;
 import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
@@ -37,9 +38,9 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
         this.blockEntity = blockEntity;
         this.data = data;
 
-        this.addSlot(new Slot(inventory, 0, 62, 7));
-        this.addSlot(new Slot(inventory, 1, 116, 7));
-        this.addSlot(new Slot(inventory, 2, 26, 15));
+        this.addSlot(new FluidTransferInputSlot(blockEntity, 0, 3, 62, 7, blockEntity.getInputTank(), playerInventory.player));
+        this.addSlot(new FluidTransferInputSlot(blockEntity, 1, 4, 116, 7, blockEntity.getResultTank(), playerInventory.player));
+        this.addSlot(new FluidTransferInputSlot(blockEntity, 2, 5, 26, 15, blockEntity.getAuxiliaryTank(), playerInventory.player));
 
         this.addSlot(new ResultSlot(inventory, 3, 62, 63));
         this.addSlot(new ResultSlot(inventory, 4, 116, 63));
@@ -104,14 +105,14 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
     private void addPlayerInventory(Inventory playerInventory) {
         for (int i = 0; i < 3; i++) {
             for (int l = 0; l < 9; l++) {
-                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 84 + i * 18));
+                this.addSlot(new Slot(playerInventory, l + i * 9 + 9, 8 + l * 18, 85 + i * 18));
             }
         }
     }
 
     private void addPlayerHotbar(Inventory playerInventory) {
         for (int i = 0; i < 9; i++) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
+            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 143));
         }
     }
 
@@ -127,6 +128,7 @@ public class BrewingBarrelMenu extends AbstractContainerMenu {
     }
 
     public int getScaledAuxArrowProgress() {
+        if (this.blockEntity.getAuxiliaryTank().isEmpty()) return 0;
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);
         int arrowProgressWidth = AgresticSprites.TINY_ARROW.width;

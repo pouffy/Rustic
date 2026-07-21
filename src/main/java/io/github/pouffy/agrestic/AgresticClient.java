@@ -2,9 +2,12 @@ package io.github.pouffy.agrestic;
 
 import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
 import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
+import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
+import io.github.pouffy.agrestic.common.item.BoozeItemColor;
 import io.github.pouffy.agrestic.core.fluid.AgresticBucketWrapper;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidType;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticItems;
 import io.github.pouffy.agrestic.init.AgresticMenuTypes;
 import net.minecraft.client.renderer.BiomeColors;
 import net.minecraft.client.renderer.entity.EntityRenderer;
@@ -104,14 +107,20 @@ public class AgresticClient {
 
     @SubscribeEvent
     public static void registerItemColorHandlers(RegisterColorHandlersEvent.Item event) {
-        event.register((stack, color) -> {BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();return event.getBlockColors().getColor(blockstate, null, null, color);},
+        event.register((stack, tintIndex) -> {BlockState blockstate = ((BlockItem)stack.getItem()).getBlock().defaultBlockState();return event.getBlockColors().getColor(blockstate, null, null, tintIndex);},
                 AgresticBlocks.APPLE_LEAVES.get()
         );
+
+        for (Item item : BuiltInRegistries.ITEM) {
+            if (item instanceof BoozeBottleItem) {
+                event.register(new BoozeItemColor(), item);
+            }
+        }
     }
 
     @SubscribeEvent
     public static void registerBlockColorHandlers(RegisterColorHandlersEvent.Block event) {
-        event.register((state, tintGetter, pos, color) -> tintGetter != null && pos != null ? BiomeColors.getAverageFoliageColor(tintGetter, pos) : FoliageColor.getDefaultColor(),
+        event.register((state, tintGetter, pos, tintIndex) -> tintGetter != null && pos != null ? BiomeColors.getAverageFoliageColor(tintGetter, pos) : FoliageColor.getDefaultColor(),
                 AgresticBlocks.APPLE_LEAVES.get()
         );
     }

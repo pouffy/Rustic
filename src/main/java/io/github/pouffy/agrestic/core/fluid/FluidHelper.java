@@ -1,5 +1,6 @@
 package io.github.pouffy.agrestic.core.fluid;
 
+import com.mojang.datafixers.util.Either;
 import com.mojang.datafixers.util.Pair;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
@@ -7,7 +8,10 @@ import io.github.pouffy.agrestic.Agrestic;
 import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
 import io.github.pouffy.agrestic.core.item.AgresticItemContainer;
 import net.minecraft.core.component.DataComponentPatch;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.protocol.game.ClientboundSoundPacket;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.tags.FluidTags;
@@ -215,6 +219,48 @@ public class FluidHelper {
         return false;
     }
 
+    @Nullable
+    public static FluidTransfer tryInteractWithTank(Level worldIn, ItemStack stack, AgresticFluidTank tank, boolean simulate) {
+        if (!stack.isEmpty()) {
+            if (ItemEmptying.canItemBeEmptied(worldIn, stack)) {
+                Pair<FluidStack, ItemStack> emptyingResult = ItemEmptying.emptyItem(worldIn, stack, true);
+                FluidStack contained = emptyingResult.getFirst();
+                int simulated = tank.fill(contained.copy(), IFluidHandler.FluidAction.SIMULATE);
+                if (simulated == contained.getAmount()) {
+                    if (simulate)
+                        return new FluidTransfer(emptyingResult.getSecond(), contained, false);
+                    int actual = tank.fill(contained.copy(), IFluidHandler.FluidAction.EXECUTE);
+                    if (actual > 0) {
+                        if (actual != emptyingResult.getFirst().getAmount()) {
+                            Agrestic.LOGGER.error("Wrong amount filled from {}, expected {}, filled {}", BuiltInRegistries.ITEM.getKey(stack.getItem()), emptyingResult.getFirst().getAmount(), actual);
+                        }
+                        return new FluidTransfer(emptyingResult.getSecond(), contained, false);
+                    }
+                }
+            } else if (ItemFilling.canItemBeFilled(worldIn, stack)) {
+                for (int i = 0; i < tank.getTanks(); i++) {
+                    FluidStack fluid = tank.getFluidInTank(i);
+                    if (fluid.isEmpty())
+                        continue;
+                    int requiredAmountForItem = ItemFilling.getRequiredAmountForItem(worldIn, stack, fluid.copy());
+                    FluidStack toDrain = fluid.copyWithAmount(requiredAmountForItem);
+                    FluidStack simulated = tank.drain(toDrain.copy(), IFluidHandler.FluidAction.SIMULATE);
+                    ItemStack out = ItemFilling.fillItem(worldIn, requiredAmountForItem, stack.copy(), fluid.copy());
+                    if (simulated.getAmount() == requiredAmountForItem) {
+                        if (simulate)
+                            return new FluidTransfer(out, toDrain, false);
+                        FluidStack actual = tank.drain(toDrain.copy(), IFluidHandler.FluidAction.EXECUTE);
+                        if (actual.getAmount() != requiredAmountForItem) {
+                            Agrestic.LOGGER.error("Wrong amount drained from {}, expected {}, filled {}", BuiltInRegistries.ITEM.getKey(stack.getItem()), fluid.getAmount(), actual.getAmount());
+                        }
+                        return new FluidTransfer(out, toDrain, false);
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     public static boolean tryEmptyItemIntoTank(Level worldIn, AgresticItemContainer container, int inSlot, int outSlot, ItemStack itemIn, AgresticBlockEntity be, AgresticFluidTank tank) {
         if (!ItemEmptying.canItemBeEmptied(worldIn, itemIn))
             return false;
@@ -352,5 +398,13 @@ public class FluidHelper {
         }
 
         return null;
+    }
+
+    public static void playUISound(Player player, SoundEvent sound) {
+        if (player.level().isClientSide) {
+            player.playSound(sound);
+        } else if (player instanceof ServerPlayer serverPlayer) {
+            serverPlayer.connection.send(new ClientboundSoundPacket(BuiltInRegistries.SOUND_EVENT.wrapAsHolder(sound), player.getSoundSource(), player.getX(), player.getY(), player.getZ(), 1, 1, player.getRandom().nextLong()));
+        }
     }
 }

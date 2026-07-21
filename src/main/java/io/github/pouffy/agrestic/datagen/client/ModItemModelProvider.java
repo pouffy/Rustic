@@ -74,6 +74,14 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
         this.bottle(AgresticItems.OLIVE_OIL_BOTTLE);
         this.bottle(AgresticItems.VANTA_OIL_BOTTLE);
 
+        this.boozeBottle(AgresticItems.ALE_BOTTLE);
+        this.boozeBottle(AgresticItems.CIDER_BOTTLE);
+        this.boozeBottle(AgresticItems.IRON_WINE_BOTTLE);
+        this.boozeBottle(AgresticItems.MEAD_BOTTLE);
+        this.boozeBottle(AgresticItems.SWEET_BERRY_WINE_BOTTLE);
+        this.boozeBottle(AgresticItems.WINE_BOTTLE);
+        this.boozeBottle(AgresticItems.AMBROSIA_BOTTLE);
+
         this.herb(AgresticBlocks.ALOE_VERA::asItem);
         this.herb(AgresticBlocks.BLOOD_ORCHID::asItem);
         this.herb(AgresticBlocks.CHAMOMILE::asItem);
@@ -107,5 +115,11 @@ public class ModItemModelProvider extends KrystalItemModelProvider {
 
     public ItemModelBuilder bottle(Supplier<? extends Item> item) {
         return this.basicItem(item, "bottle/" + itemName(item.get()).replace("_bottle", ""), "");
+    }
+
+    public ItemModelBuilder boozeBottle(Supplier<? extends Item> item) {
+        return this.getBuilder(itemName(item.get())).parent(new ModelFile.UncheckedModelFile("item/generated"))
+                .texture("layer0", Agrestic.location("item/bottle/" + itemName(item.get()).replace("_bottle", "")))
+                .texture("layer1", Agrestic.location("item/booze_label"));
     }
 }

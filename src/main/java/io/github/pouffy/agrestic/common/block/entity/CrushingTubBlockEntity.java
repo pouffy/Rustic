@@ -73,6 +73,16 @@ public class CrushingTubBlockEntity extends AgresticBlockEntity {
         event.registerBlockEntity(Capabilities.ItemHandler.BLOCK, AgresticBlockEntities.CRUSHING_TUB.get(), (be, context) -> be.container);
     }
 
+    @Override
+    public void serverTick() {
+
+    }
+
+    @Override
+    public void clientTick() {
+
+    }
+
     public void crush() {
         if (level == null) return;
         boolean noRecipe = false;

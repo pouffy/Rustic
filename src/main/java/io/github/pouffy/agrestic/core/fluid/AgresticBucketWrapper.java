@@ -3,6 +3,7 @@ package io.github.pouffy.agrestic.core.fluid;
 import com.pouffydev.krystal_core.KrystalCore;
 import com.pouffydev.krystal_core.content.item.HoneyBucketItem;
 import io.github.pouffy.agrestic.core.item.AgresticBucketItem;
+import lombok.Getter;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -13,15 +14,12 @@ import net.neoforged.neoforge.fluids.FluidUtil;
 import net.neoforged.neoforge.fluids.capability.IFluidHandler;
 import net.neoforged.neoforge.fluids.capability.IFluidHandlerItem;
 
+@Getter
 public class AgresticBucketWrapper implements IFluidHandlerItem {
     protected ItemStack container;
 
     public AgresticBucketWrapper(ItemStack container) {
         this.container = container;
-    }
-
-    public ItemStack getContainer() {
-        return this.container;
     }
 
     public boolean canFillFluidType(FluidStack fluid) {

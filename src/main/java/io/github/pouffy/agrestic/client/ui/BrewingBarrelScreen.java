@@ -60,7 +60,28 @@ public class BrewingBarrelScreen extends AbstractContainerScreen<BrewingBarrelMe
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, AgresticSprites.BREWING_BARREL.location);
 
-        guiGraphics.blit(AgresticSprites.BREWING_BARREL.location, this.leftPos, this.topPos, 0, 0, AgresticSprites.BREWING_BARREL.width, AgresticSprites.BREWING_BARREL.height);
+        AgresticSprites.BLANK_CONTAINER.blitWithInventory(guiGraphics, this.leftPos, this.topPos);
+
+        // Auxiliary
+        AgresticSprites.SLOT.blit(guiGraphics, this.leftPos + 25, this.topPos + 14);
+        AgresticSprites.SLOT.blit(guiGraphics, this.leftPos + 25, this.topPos + 34);
+        AgresticSprites.SLOT.blit(guiGraphics, this.leftPos + 25, this.topPos + 54);
+
+        AgresticSprites.TINY_ARROW_BASE.blit(guiGraphics, this.leftPos + 44, this.topPos + 37);
+
+        // Input
+        AgresticSprites.SLOT.blit(guiGraphics, this.leftPos + 61, this.topPos + 6);
+        AgresticSprites.TANK.blit(guiGraphics, this.leftPos + 61, this.topPos + 26);
+        AgresticSprites.SLOT.blit(guiGraphics, this.leftPos + 61, this.topPos + 62);
+
+        AgresticSprites.ARROW_BASE.blit(guiGraphics, this.leftPos + 85, this.topPos + 34);
+
+        // Result
+        AgresticSprites.SLOT.blit(guiGraphics, this.leftPos + 115, this.topPos + 6);
+        AgresticSprites.TANK.blit(guiGraphics, this.leftPos + 115, this.topPos + 26);
+        AgresticSprites.SLOT.blit(guiGraphics, this.leftPos + 115, this.topPos + 62);
+
+        AgresticSprites.BUBBLES_BASE.blit(guiGraphics, this.leftPos + 136, this.topPos + 27);
 
         renderProgress(guiGraphics, this.leftPos, this.topPos);
     }
@@ -68,13 +89,13 @@ public class BrewingBarrelScreen extends AbstractContainerScreen<BrewingBarrelMe
     private void renderProgress(GuiGraphics guiGraphics, int x, int y) {
         int m = this.menu.getBrewingTime();
         if (m > 0) {
-            guiGraphics.blit(AgresticSprites.ARROW.location, x + 85, y + 33, 0, 0, menu.getScaledArrowProgress(), 16, AgresticSprites.ARROW.width, AgresticSprites.ARROW.height);
+            AgresticSprites.TINY_ARROW.blit(guiGraphics, x + 44, y + 36, 0, 0, menu.getScaledAuxArrowProgress(), 10);
 
-            guiGraphics.blit(AgresticSprites.TINY_ARROW.location, x + 44, y + 36, 0, 0, menu.getScaledAuxArrowProgress(), 10, AgresticSprites.TINY_ARROW.width, AgresticSprites.TINY_ARROW.height);
+            AgresticSprites.ARROW.blit(guiGraphics, x + 85, y + 33, 0, 0, menu.getScaledArrowProgress(), 16);
 
             int n = BUBBLE_PROGRESS[m / 3 % 7];
             if (n > 0) {
-                guiGraphics.blit(AgresticSprites.BUBBLES.location, x + 136, y + 27 + 32 - n, 0, 32 - n, 16, n, AgresticSprites.BUBBLES.width,  AgresticSprites.BUBBLES.height);
+                AgresticSprites.BUBBLES.blit(guiGraphics, x + 136, y + 27 + 32 - n, 0, 32 - n, 16, n);
             }
         }
     }

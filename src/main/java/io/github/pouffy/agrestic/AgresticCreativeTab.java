@@ -4,20 +4,28 @@ import com.pouffydev.krystal_core.foundation.registry.CreativeTabRegistryHelper;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
 import com.pouffydev.krystal_core.foundation.utility.CreativeTabManager;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import io.github.pouffy.agrestic.init.AgresticFluids;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import lombok.Setter;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.world.item.*;
 import net.minecraft.world.level.ItemLike;
+import net.neoforged.bus.api.EventPriority;
+import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.common.EventBusSubscriber;
+import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.registries.DeferredHolder;
 
 import java.util.Objects;
+import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+@EventBusSubscriber
 public class AgresticCreativeTab {
     private static final CreativeTabRegistryHelper HELPER = Agrestic.getRegistryHelper().getCreativeTabHelper();
 
@@ -134,6 +142,37 @@ public class AgresticCreativeTab {
         ///add(AgresticBlocks.BASIC_RETORT);
         ///add(AgresticBlocks.ADVANCED_CONDENSER);
         ///add(AgresticBlocks.ADVANCED_RETORT);
+    }
+
+    @SubscribeEvent(priority = EventPriority.LOWEST)
+    public static void populateExtra(BuildCreativeModeTabContentsEvent event) {
+        generateBooze(event, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+    }
+
+    private static void generateBooze(CreativeModeTab.Output output, CreativeModeTab.TabVisibility tabVisibility) {
+        Set<ItemStack> set = ItemStackLinkedSet.createTypeAndComponentsSet();
+        var ironWine = new ItemStack(AgresticItems.IRON_WINE_BOTTLE.asItem());
+        ironWine.set(AgresticDataComponents.QUALITY, 0.75f);
+        var ale = new ItemStack(AgresticItems.ALE_BOTTLE.asItem());
+        ale.set(AgresticDataComponents.QUALITY, 0.75f);
+        var cider = new ItemStack(AgresticItems.CIDER_BOTTLE.asItem());
+        cider.set(AgresticDataComponents.QUALITY, 0.75f);
+        var mead = new ItemStack(AgresticItems.MEAD_BOTTLE.asItem());
+        mead.set(AgresticDataComponents.QUALITY, 0.75f);
+        var ambrosia = new ItemStack(AgresticItems.AMBROSIA_BOTTLE.asItem());
+        ambrosia.set(AgresticDataComponents.QUALITY, 0.75f);
+        var sweetBerryWine = new ItemStack(AgresticItems.SWEET_BERRY_WINE_BOTTLE.asItem());
+        sweetBerryWine.set(AgresticDataComponents.QUALITY, 0.75f);
+        var wine = new ItemStack(AgresticItems.WINE_BOTTLE.asItem());
+        wine.set(AgresticDataComponents.QUALITY, 0.75f);
+        set.add(ironWine);
+        set.add(ale);
+        set.add(cider);
+        set.add(mead);
+        set.add(ambrosia);
+        set.add(sweetBerryWine);
+        set.add(wine);
+        output.acceptAll(set, tabVisibility);
     }
 
     private static void add(ItemLike itemLike) {

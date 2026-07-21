@@ -8,6 +8,7 @@ import io.github.pouffy.agrestic.common.recipe.BrewingRecipeInput;
 import io.github.pouffy.agrestic.common.recipe.EvaporatingBasinRecipe;
 import io.github.pouffy.agrestic.core.TextUtils;
 import io.github.pouffy.agrestic.core.block.AgresticBlockEntity;
+import io.github.pouffy.agrestic.core.block.AgresticContainerBlockEntity;
 import io.github.pouffy.agrestic.core.fluid.*;
 import io.github.pouffy.agrestic.core.item.AgresticItemContainer;
 import io.github.pouffy.agrestic.core.recipe.RecipeSearch;
@@ -42,7 +43,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Container, MenuProvider, Nameable {
+public class BrewingBarrelBlockEntity extends AgresticContainerBlockEntity {
 
     @Getter
     protected final CombinedFluidTank tanks;
@@ -52,15 +53,9 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Con
     protected final AgresticFluidTank resultTank;
     @Getter
     protected final AgresticFluidTank auxiliaryTank;
-    @Getter
-    protected final AgresticItemContainer container;
 
     protected int progress;
     protected int progressTotal;
-
-    private Component customName;
-
-    protected final ContainerData data;
 
     protected BrewingBarrelRecipe recipe = null;
 
@@ -70,8 +65,6 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Con
         this.resultTank = new AgresticFluidTank(8000, this::onOutputChanged).forbidInsertion();
         this.auxiliaryTank = new AgresticFluidTank(1000, this::onAuxiliaryChanged);
         this.tanks = new CombinedFluidTank(this.inputTank, this.resultTank, this.auxiliaryTank);
-        this.container = new AgresticItemContainer(6, this::onItemsChanged);
-        this.data = createIntArray();
     }
 
     public static void registerCapabilities(RegisterCapabilitiesEvent event) {
@@ -80,11 +73,12 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Con
     }
 
     public void serverTick() {
-        this.handleContainerInteraction(0, 3, this.getInputTank());
-        this.handleContainerInteraction(1, 4, this.getResultTank());
-        this.handleContainerInteraction(2, 5, this.getAuxiliaryTank());
         if (!getInputTank().isEmpty()) {
             this.tryBrew();
+        } else if (this.progress != 0 || this.progressTotal != 0){
+            this.progress = 0;
+            this.progressTotal = 0;
+            markUpdated();
         }
     }
 
@@ -98,27 +92,32 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Con
         BrewingRecipeInput input = new BrewingRecipeInput(getInputTank().getFluid(), getAuxiliaryTank().getFluid());
         BrewingBarrelRecipe recipe = RecipeSearch.search(level, AgresticRecipeTypes.BREWING_BARREL.get()).findRecipe(input);
 
-        if (recipe == null) {
+        if (recipe != null) {
+            this.recipe = recipe;
+        } else if (this.progress != 0 || this.progressTotal != 0) {
             this.progress = 0;
             this.progressTotal = 0;
             markUpdated();
             return;
         }
 
-        this.progressTotal = recipe.getTime();
-        if (getInputTank().getFluidAmount() > 0 && getResultTank().getFluidAmount() < getResultTank().getCapacity()) {
-            this.progress++;
+        if (this.recipe != null) {
+            this.progressTotal = this.recipe.getTime();
 
-            if (progress >= progressTotal) {
-                brew(recipe, input);
-                progress = 0;
-                progressTotal = 0;
-                markUpdated();
+            if (getInputTank().getFluidAmount() > 0 && getResultTank().getFluidAmount() < getResultTank().getCapacity()) {
+                this.progress++;
+
+                if (progress >= progressTotal) {
+                    brew(input);
+                    progress = 0;
+                    progressTotal = 0;
+                    markUpdated();
+                }
             }
         }
     }
 
-    private void brew(BrewingBarrelRecipe recipe, BrewingRecipeInput input) {
+    private void brew(BrewingRecipeInput input) {
         int availableSpace = getResultTank().getCapacity() - getResultTank().getFluidAmount();
         int amountToConvert = Math.min(availableSpace, input.getFluid().getAmount());
 
@@ -143,15 +142,6 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Con
             }
             markUpdated();
         }
-    }
-
-    private void handleContainerInteraction(int slot, int outSlot, AgresticFluidTank tank) {
-        ItemStack inStack = getContainer().getStackInSlot(slot);
-        if (inStack.isEmpty()) return;
-        if (FluidHelper.tryEmptyItemIntoTank(level, getContainer(), slot, outSlot, inStack, this, tank))
-            return;
-        if (FluidHelper.tryFillItemFromTank(level, getContainer(), slot, outSlot, inStack, this, tank))
-            return;
     }
 
     protected void onInputChanged(FluidStack newFluids) {
@@ -179,139 +169,12 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Con
     }
 
     @Override
-    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.loadAdditional(tag, registries);
-        this.inputTank.readFromNBT(registries, tag.getCompound("InputTank"));
-        this.resultTank.readFromNBT(registries, tag.getCompound("ResultTank"));
-        this.auxiliaryTank.readFromNBT(registries, tag.getCompound("AuxiliaryTank"));
-        this.container.deserializeNBT(registries, tag.getCompound("Container"));
-        this.progress = tag.getInt("Progress");
-        this.progressTotal = tag.getInt("ProgressTotal");
-        if (customName != null) {
-            tag.putString("CustomName", Component.Serializer.toJson(customName, registries));
-        }
+    public AgresticItemContainer newContainer() {
+        return new AgresticItemContainer(6, this::onItemsChanged);
     }
 
     @Override
-    public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
-        super.saveAdditional(tag, registries);
-        tag.put("InputTank", this.inputTank.writeToNBT(registries, new CompoundTag()));
-        tag.put("ResultTank", this.resultTank.writeToNBT(registries, new CompoundTag()));
-        tag.put("AuxiliaryTank", this.auxiliaryTank.writeToNBT(registries, new CompoundTag()));
-        tag.put("Container", this.container.serializeNBT(registries));
-        tag.putInt("Progress", this.progress);
-        tag.putInt("ProgressTotal", this.progressTotal);
-        if (tag.contains("CustomName", 8)) {
-            customName = Component.Serializer.fromJson(tag.getString("CustomName"), registries);
-        }
-    }
-
-    @Override
-    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
-        return this.saveWithoutMetadata(registries);
-    }
-
-    @Override
-    public ClientboundBlockEntityDataPacket getUpdatePacket() {
-        return ClientboundBlockEntityDataPacket.create(this);
-    }
-
-    public List<ItemStack> getAllStacks() {
-        List<ItemStack> stacks = new ArrayList<>();
-        for (int i = 0; i < getContainer().getSlots(); i++) {
-            ItemStack contained = getContainer().getStackInSlot(i);
-            if (!contained.isEmpty()) {
-                stacks.add(contained);
-            }
-        }
-        return stacks;
-    }
-
-    @Override
-    public int getContainerSize() {
-        return this.getContainer().getSlots();
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return this.getContainer().isEmpty();
-    }
-
-    @Override
-    public ItemStack getItem(int index) {
-        return this.getContainer().getStackInSlot(index);
-    }
-
-    @Override
-    public ItemStack removeItem(int index, int count) {
-        ItemStack itemstack = this.getContainer().extractItem(index, count, false);
-        if (!itemstack.isEmpty()) {
-            this.setChanged();
-        }
-
-        return itemstack;
-    }
-
-    @Override
-    public ItemStack removeItemNoUpdate(int index) {
-        return this.getContainer().extractItem(index, getContainer().getStackInSlot(index).getMaxStackSize(), false);
-    }
-
-    @Override
-    public void setItem(int index, ItemStack itemStack) {
-        this.getContainer().insertItem(index, itemStack, false);
-    }
-
-    @Override
-    public boolean stillValid(Player player) {
-        return Container.stillValidBlockEntity(this, player);
-    }
-
-    @Override
-    public void clearContent() {
-        this.getContainer().clear();
-        this.markUpdated();
-    }
-
-    @Override
-    protected void applyImplicitComponents(BlockEntity.DataComponentInput componentInput) {
-        super.applyImplicitComponents(componentInput);
-        this.customName = componentInput.get(DataComponents.CUSTOM_NAME);
-    }
-
-    @Override
-    protected void collectImplicitComponents(DataComponentMap.Builder components) {
-        super.collectImplicitComponents(components);
-        components.set(DataComponents.CUSTOM_NAME, this.customName);
-    }
-
-    @Override
-    public void removeComponentsFromTag(CompoundTag tag) {
-        tag.remove("CustomName");
-    }
-
-    @Override
-    public Component getName() {
-        return customName != null ? customName : Component.translatable(Agrestic.location("brewing_barrel").toLanguageKey("container"));
-    }
-
-    @Override
-    public Component getDisplayName() {
-        return getName();
-    }
-
-    @Override
-    @Nullable
-    public Component getCustomName() {
-        return customName;
-    }
-
-    @Override
-    public @Nullable AbstractContainerMenu createMenu(int syncId, Inventory inventory, Player player) {
-        return new BrewingBarrelMenu(syncId, inventory, this, this.data);
-    }
-
-    private ContainerData createIntArray() {
+    public ContainerData createContainerData() {
         return new ContainerData()
         {
             @Override
@@ -336,6 +199,46 @@ public class BrewingBarrelBlockEntity extends AgresticBlockEntity implements Con
                 return 2;
             }
         };
+    }
+
+    @Override
+    public String getContainerName() {
+        return "brewing_barrel";
+    }
+
+    @Override
+    public void loadAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.loadAdditional(tag, registries);
+        this.inputTank.readFromNBT(registries, tag.getCompound("InputTank"));
+        this.resultTank.readFromNBT(registries, tag.getCompound("ResultTank"));
+        this.auxiliaryTank.readFromNBT(registries, tag.getCompound("AuxiliaryTank"));
+        this.progress = tag.getInt("Progress");
+        this.progressTotal = tag.getInt("ProgressTotal");
+    }
+
+    @Override
+    public void saveAdditional(CompoundTag tag, HolderLookup.Provider registries) {
+        super.saveAdditional(tag, registries);
+        tag.put("InputTank", this.inputTank.writeToNBT(registries, new CompoundTag()));
+        tag.put("ResultTank", this.resultTank.writeToNBT(registries, new CompoundTag()));
+        tag.put("AuxiliaryTank", this.auxiliaryTank.writeToNBT(registries, new CompoundTag()));
+        tag.putInt("Progress", this.progress);
+        tag.putInt("ProgressTotal", this.progressTotal);
+    }
+
+    @Override
+    public CompoundTag getUpdateTag(HolderLookup.Provider registries) {
+        return this.saveWithoutMetadata(registries);
+    }
+
+    @Override
+    public ClientboundBlockEntityDataPacket getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public @Nullable AbstractContainerMenu createMenu(int syncId, Inventory inventory, Player player) {
+        return new BrewingBarrelMenu(syncId, inventory, this, this.data);
     }
 
     public ItemStack tryFillContainer(ItemStack heldStack) {

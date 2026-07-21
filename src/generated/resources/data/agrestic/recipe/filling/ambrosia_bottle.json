@@ -1,0 +1,17 @@
+{
+  "type": "agrestic:filling",
+  "empty": {
+    "item": "minecraft:glass_bottle"
+  },
+  "fluid": {
+    "amount": 250,
+    "fluid": "agrestic:ambrosia"
+  },
+  "full": {
+    "count": 1,
+    "id": "agrestic:ambrosia_bottle"
+  },
+  "inherited_components": [
+    "agrestic:quality"
+  ]
+}

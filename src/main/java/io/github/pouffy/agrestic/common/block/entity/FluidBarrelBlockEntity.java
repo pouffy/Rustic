@@ -69,6 +69,16 @@ public class FluidBarrelBlockEntity extends AgresticBlockEntity {
         event.registerBlockEntity(Capabilities.FluidHandler.BLOCK, AgresticBlockEntities.FLUID_BARREL.get(), (be, context) -> be.tank);
     }
 
+    @Override
+    public void serverTick() {
+
+    }
+
+    @Override
+    public void clientTick() {
+
+    }
+
     public FluidStack getFluidStack() {
         var inv = getTank();
         return inv.getFluid();

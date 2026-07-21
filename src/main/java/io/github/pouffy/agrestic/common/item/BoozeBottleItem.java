@@ -3,21 +3,30 @@ package io.github.pouffy.agrestic.common.item;
 import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import io.github.pouffy.agrestic.init.AgresticEffects;
+import lombok.Getter;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 public class BoozeBottleItem extends DrinkableItem {
-    private final Consumer<BoozeConsumptionContext> consumptionEffect;
+    @Getter
+    private final Function<BoozeConsumptionContext, FoodProperties> consumptionProperties;
+    @Getter @Nullable
+    private Consumer<BoozeConsumptionContext> runnable = null;
+
+    @Getter
     protected float inebriationChance = 0.5f;
 
-    public BoozeBottleItem(Properties properties, Consumer<BoozeConsumptionContext> consumptionEffect) {
+    public BoozeBottleItem(Properties properties, Function<BoozeConsumptionContext, FoodProperties> consumptionProperties) {
         super(properties);
-        this.consumptionEffect = consumptionEffect;
+        this.consumptionProperties = consumptionProperties;
     }
 
     public BoozeBottleItem setInebriationChance(float chance) {
@@ -25,23 +34,32 @@ public class BoozeBottleItem extends DrinkableItem {
         return this;
     }
 
+    public BoozeBottleItem withRunnable(Consumer<BoozeConsumptionContext> runnable) {
+        this.runnable = runnable;
+        return this;
+    }
+
     @Override
     public ItemStack finishUsingItem(ItemStack stack, Level world, LivingEntity user) {
         if (!world.isClientSide && user instanceof Player player) {
             float quality = stack.getOrDefault(AgresticDataComponents.QUALITY, BrewingBarrelRecipe.DEFAULT_QUALITY);
-            consumptionEffect.accept(new BoozeConsumptionContext(world, player, quality));
+            BoozeConsumptionContext context = new BoozeConsumptionContext(world, player, quality);
+            if (getRunnable() != null) {
+                getRunnable().accept(context);
+            }
+            player.eat(world, stack, getConsumptionProperties().apply(context));
             inebriate(world, player, quality);
         }
         return super.finishUsingItem(stack, world, user);
     }
 
-    private void inebriate(Level world, Player player, float quality) {
+    public void inebriate(Level world, Player player, float quality) {
         int duration = (quality  >= 0.5f)
                 ? ((int) (12000 * (Math.max(1 - Math.abs(quality - 0.75F), 0.5F))))
                 : ((int) (12000 * (Math.max(1 - (quality * 0.5F), 0.5F))));
         float inebriationChanceMod = Math.clamp(1 - Math.abs(0.67F * (quality - 0.75F)), 0, 1);
         MobEffectInstance tipsyEffect = player.getEffect(AgresticEffects.TIPSY);
-        if (world.getRandom().nextFloat() < this.inebriationChance * inebriationChanceMod) {
+        if (world.getRandom().nextFloat() < getInebriationChance() * inebriationChanceMod) {
             if (tipsyEffect == null) {
                 player.addEffect(new MobEffectInstance(AgresticEffects.TIPSY, duration, 0, false, false));
             } else if (tipsyEffect.getAmplifier() < 3) {
@@ -49,7 +67,6 @@ public class BoozeBottleItem extends DrinkableItem {
             }
         }
     }
-
 
     public record BoozeConsumptionContext(Level world, Player player, float quality) {}
 }

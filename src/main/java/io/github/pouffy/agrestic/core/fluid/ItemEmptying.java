@@ -1,6 +1,7 @@
 package io.github.pouffy.agrestic.core.fluid;
 
 import com.mojang.datafixers.util.Pair;
+import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
 import io.github.pouffy.agrestic.common.recipe.EmptyingRecipe;
 import io.github.pouffy.agrestic.core.recipe.RecipeSearch;
 import io.github.pouffy.agrestic.init.AgresticRecipeTypes;
@@ -40,10 +41,10 @@ public class ItemEmptying {
         if (recipe.isPresent()) {
             EmptyingRecipe emptyingRecipe = recipe.get();
             ItemStack resultItem = emptyingRecipe.getResultItem(level.registryAccess());
+            resultingItem = resultItem.isEmpty() ? ItemStack.EMPTY : resultItem;
+            resultingFluid = emptyingRecipe.getResultingFluid(stack);
             if (!simulate)
                 stack.shrink(1);
-            resultingItem = resultItem.isEmpty() ? ItemStack.EMPTY : resultItem;
-            resultingFluid = emptyingRecipe.getResultingFluid();
             return Pair.of(resultingFluid, resultingItem);
         }
 

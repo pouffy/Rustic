@@ -1,0 +1,17 @@
+{
+  "type": "agrestic:emptying",
+  "empty": {
+    "count": 1,
+    "id": "minecraft:glass_bottle"
+  },
+  "fluid": {
+    "amount": 250,
+    "id": "agrestic:iron_wine"
+  },
+  "full": {
+    "item": "agrestic:iron_wine_bottle"
+  },
+  "inherited_components": [
+    "agrestic:quality"
+  ]
+}

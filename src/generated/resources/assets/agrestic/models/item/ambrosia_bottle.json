@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "agrestic:item/bottle/ambrosia",
+    "layer1": "agrestic:item/booze_label"
+  }
+}

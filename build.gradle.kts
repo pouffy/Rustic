@@ -95,6 +95,10 @@ repositories {
     }
     mavenLocal()
     mavenCentral()
+    maven {
+        name = "Appleskin maven"
+        url = uri("https://maven.ryanliptak.com/")
+    }
     maven { //Modrinth Maven, Generic
         name = "Modrinth maven"
         url = uri("https://api.modrinth.com/maven")
@@ -119,12 +123,15 @@ dependencies {
     compileOnlyApi("dev.emi:emi-neoforge:${property("emi_version")}:api")
     localRuntime("dev.emi:emi-neoforge:${property("emi_version")}")
 
+    compileOnly("squeek.appleskin:appleskin-neoforge:${property("appleskin")}")
+    localRuntime("squeek.appleskin:appleskin-neoforge:${property("appleskin")}")
+
     runtimeOnly("maven.modrinth:emi-loot:${property("emiLoot")}+1.21+neoforge")
     runtimeOnly("maven.modrinth:fzzy-config:${property("fzzyConfig")}+1.21+neoforge")
     runtimeOnly("maven.modrinth:kotlin-for-forge:${property("kotlin")}")
 
     runtimeOnly("maven.modrinth:jade:15.10.5+neoforge")
-    compileOnly("maven.modrinth:jade:15.10.5+neoforge")
+    localRuntime("maven.modrinth:jade:15.10.5+neoforge")
 
     implementation("org.projectlombok:lombok:1.18.46")
     runtimeOnly("me.djtheredstoner:DevAuth-neoforge:1.2.1")
