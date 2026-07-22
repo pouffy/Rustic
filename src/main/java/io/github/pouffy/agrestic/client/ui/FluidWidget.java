@@ -19,6 +19,7 @@ import net.minecraft.client.gui.narration.NarratableEntry;
 import net.minecraft.client.gui.narration.NarrationElementOutput;
 import net.minecraft.client.gui.navigation.FocusNavigationEvent;
 import net.minecraft.client.gui.navigation.ScreenRectangle;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.component.DataComponentPatch;
@@ -69,31 +70,35 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
             return;
         }
         this.isHovered = guiGraphics.containsPointInScissor(mouseX, mouseY) && mouseX >= this.getX() && mouseY >= this.getY() && mouseX < this.getX() + this.width && mouseY < this.getY() + this.height;
-
         long fluidAmount = this.fluidStorage.getFluidAmount();
-        if(fluidAmount <= 0)
-            return;
 
-        long fluidCapacity = this.fluidStorage.getCapacity();
-        int fluidHeight = Math.round(((float) fluidAmount / fluidCapacity) * this.height);
+        if (fluidAmount > 0) {
+            long fluidCapacity = this.fluidStorage.getCapacity();
+            int fluidHeight = Math.round(((float) fluidAmount / fluidCapacity) * this.height);
 
-        BlockPos pos = this.posSupplier.get();
-        Level world = Minecraft.getInstance().level;
-        if(world == null)
-            return;
+            BlockPos pos = this.posSupplier.get();
+            Level world = Minecraft.getInstance().level;
+            if(world == null)
+                return;
 
-        int tintColor = ClientFluidHelper.getColor(this.fluidStorage.getFluid(), world, pos);
-        float red = (tintColor >> 16 & 0xFF) / 255f;
-        float green = (tintColor >> 8 & 0xFF) / 255f;
-        float blue = (tintColor & 0xFF) / 255f;
-        RenderSystem.enableBlend();
-        RenderSystem.defaultBlendFunc();
+            int tintColor = ClientFluidHelper.getColor(this.fluidStorage.getFluid(), world, pos);
+            float red = (tintColor >> 16 & 0xFF) / 255f;
+            float green = (tintColor >> 8 & 0xFF) / 255f;
+            float blue = (tintColor & 0xFF) / 255f;
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
 
-        ClientFluidHelper.renderUIFluid(guiGraphics.pose(), this.fluidStorage.getFluid(), red, green, blue, 1.0f, this.x, this.y, this.height, fluidHeight, this.width);
+            ClientFluidHelper.renderUIFluid(guiGraphics.pose(), this.fluidStorage.getFluid(), red, green, blue, 1.0f, this.x, this.y, this.height, fluidHeight, this.width);
+        }
 
         if(isMouseOver(mouseX, mouseY)) {
+            renderSlotHighlight(guiGraphics, -2130706433);
             drawTooltip(guiGraphics, mouseX, mouseY);
         }
+    }
+
+    public void renderSlotHighlight(GuiGraphics guiGraphics, int color) {
+        guiGraphics.fillGradient(RenderType.guiOverlay(), x, y, x + width, y + height, color, color, 0);
     }
 
     @Override
@@ -228,6 +233,10 @@ public class FluidWidget implements Renderable, GuiEventListener, LayoutElement,
                 }
             }
             tooltipLines.add(Component.literal("%s/%s mB".formatted(fluidAmount, fluidCapacity)).withStyle(ChatFormatting.GRAY));
+            guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY);
+        } else {
+            List<Component> tooltipLines = new ArrayList<>();
+            tooltipLines.add(Component.literal("0/%s mB".formatted(fluidCapacity)).withStyle(ChatFormatting.GRAY));
             guiGraphics.renderTooltip(font, tooltipLines, Optional.empty(), mouseX, mouseY);
         }
     }

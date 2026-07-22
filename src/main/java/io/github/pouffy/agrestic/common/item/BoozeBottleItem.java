@@ -17,14 +17,14 @@ import java.util.function.Function;
 
 public class BoozeBottleItem extends DrinkableItem {
     @Getter
-    private final Function<BoozeConsumptionContext, FoodProperties> consumptionProperties;
+    private final Function<Float, FoodProperties> consumptionProperties;
     @Getter @Nullable
     private Consumer<BoozeConsumptionContext> runnable = null;
 
     @Getter
     protected float inebriationChance = 0.5f;
 
-    public BoozeBottleItem(Properties properties, Function<BoozeConsumptionContext, FoodProperties> consumptionProperties) {
+    public BoozeBottleItem(Properties properties, Function<Float, FoodProperties> consumptionProperties) {
         super(properties);
         this.consumptionProperties = consumptionProperties;
     }
@@ -47,7 +47,7 @@ public class BoozeBottleItem extends DrinkableItem {
             if (getRunnable() != null) {
                 getRunnable().accept(context);
             }
-            player.eat(world, stack, getConsumptionProperties().apply(context));
+            player.eat(world, stack, getConsumptionProperties().apply(quality));
             inebriate(world, player, quality);
         }
         return super.finishUsingItem(stack, world, user);

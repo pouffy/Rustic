@@ -62,6 +62,8 @@ public class ModLanguageProvider extends KrystalLanguageProvider {
         add("ui.agrestic.tooltip.fluid", "%s %smb / %smb");
         add("ui.agrestic.tooltip.item", "%s x%s");
 
+        add("death.attack.bad_ambrosia", "%1$s tasted tainted divinity");
+
         NeoForgeRegistries.FLUID_TYPES.registryKeySet().stream().filter((key) -> key.location().getNamespace().equals(Agrestic.MODID)).forEach((key) -> add("fluid_type.agrestic.%s".formatted(key.location().getPath()), transform(key.location())));
 
         config("title", "Agrestic");

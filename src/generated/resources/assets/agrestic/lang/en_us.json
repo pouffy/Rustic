@@ -69,6 +69,7 @@
   "block.agrestic.tank.filled": "Filled %s mb %s",
   "block.agrestic.vanta_lily": "Vanta Lily",
   "block.agrestic.wind_thistle": "Wind Thistle",
+  "death.attack.bad_ambrosia": "%1$s tasted tainted divinity",
   "effect.agrestic.blazing_trail": "Blazing Trail",
   "effect.agrestic.fire_power": "Fire Power",
   "effect.agrestic.full": "Full",

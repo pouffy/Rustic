@@ -1,8 +1,8 @@
 package io.github.pouffy.agrestic.client.ui.slot;
 
+import com.pouffydev.krystal_core.foundation.utility.Pair;
 import io.github.pouffy.agrestic.core.block.AgresticContainerBlockEntity;
 import io.github.pouffy.agrestic.core.fluid.*;
-import io.github.pouffy.agrestic.core.item.AgresticItemContainer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -35,39 +35,98 @@ public class FluidTransferInputSlot extends FluidTransferSlot {
 
     @Override
     public void set(ItemStack stack) {
-        AgresticItemContainer itemContainer = getBlockEntity().newContainer();
         if (!stack.isEmpty()) {
-            SoundEvent success = null;
-            ItemStack resultStack = ItemStack.EMPTY;
-            int amountForSlot = container.getItem(outSlot).getCount();
-            for (int i = 1; i <= stack.getCount(); i++) {
-                ItemStack existing = container.getItem(outSlot);
-                if (!existing.isEmpty() && existing.getCount() + 1 > existing.getMaxStackSize()) {
-                    super.set(stack);
-                    break;
+            int successfulInputs = calcSuccessfulInputs(stack);
+            ItemStack forProcessing = stack.copyWithCount(successfulInputs);
+            ItemStack remainingInputs = stack.copyWithCount(stack.getCount() - successfulInputs);
+            if (successfulInputs > 0) {
+                container.removeItem(getSlot(), successfulInputs);
+                Pair<ItemStack, SoundEvent> result = processInputs(forProcessing);
+                if (!result.getFirst().isEmpty()) {
+                    container.setItem(outSlot, result.getFirst());
                 }
-                FluidTransfer simulatedResult = FluidHelper.tryInteractWithTank(getBlockEntity().getLevel(), stack, tank, true);
-                if (simulatedResult != null) {
-                    if (itemContainer.canInsert(outSlot, simulatedResult.stack())) {
-                        FluidTransfer actualResult = FluidHelper.tryInteractWithTank(getBlockEntity().getLevel(), stack, tank, false);
-                        if (actualResult != null) {
-                            container.removeItem(getSlot(), 1);
-                            ItemStack result = actualResult.stack().copyWithCount(1);
-                            if (resultStack.isEmpty()) {
-                                resultStack = result;
-                                amountForSlot = 1;
-                            } else {
-                                amountForSlot++;
-                            }
-                            success = actualResult.getSound();
-                        }
-                    } else break;
-                }
+                if (result.getSecond() != null) FluidHelper.playUISound(player, result.getSecond());
             }
-            if (!resultStack.isEmpty()) {
-                container.setItem(outSlot, resultStack.copyWithCount(amountForSlot));
+            // Always put back any remaining inputs (may be empty)
+            if (!remainingInputs.isEmpty()) {
+                setRemainingInSlot(remainingInputs);
+            } else {
+                setRemainingInSlot(ItemStack.EMPTY);
             }
-            if (success != null) FluidHelper.playUISound(player, success);
         }
+    }
+
+    private void setRemainingInSlot(ItemStack stack) {
+        super.set(stack);
+    }
+
+    private int calcSuccessfulInputs(ItemStack stack) {
+        if (stack.isEmpty()) return 0;
+        var level = getBlockEntity().getLevel();
+        FluidTransfer singleSim = FluidHelper.tryInteractWithTank(level, stack.copyWithCount(1), tank, true);
+        if (singleSim == null) return 0;
+        FluidStack perItemFluid = singleSim.fluid();
+        int perAmount = perItemFluid.getAmount();
+
+        int availableByTank;
+        if (ItemEmptying.canItemBeEmptied(level, stack)) {
+            availableByTank = (tank.getCapacity() - tank.getFluidAmount()) / perAmount;
+        } else if (ItemFilling.canItemBeFilled(level, stack)) {
+            availableByTank = tank.getFluidAmount() / perAmount;
+        } else {
+            availableByTank = 0;
+        }
+        if (availableByTank <= 0) return 0;
+
+        var container = this.getBlockEntity().getContainer();
+        if (!container.canInsert()) return 0;
+        ItemStack result = singleSim.stack();
+        int availableByOutput;
+        ItemStack existing = container.getStackInSlot(outSlot);
+        if (existing == ItemStack.EMPTY) {
+            if (!container.isItemValid(outSlot, result)) return 0;
+            availableByOutput = result.getMaxStackSize();
+        } else {
+            if (!ItemStack.isSameItemSameComponents(existing, result) || !container.isItemValid(outSlot, result)) return 0;
+            availableByOutput = existing.getMaxStackSize() - existing.getCount();
+        }
+
+        int max = Math.min(stack.getCount(), Math.min(availableByTank, availableByOutput));
+        return Math.max(0, max);
+    }
+
+    private boolean canInsert(ItemStack stack, int slot) {
+        var container = this.getBlockEntity().getContainer();
+        if (!getBlockEntity().getContainer().canInsert()) return false;
+        boolean stackCheck = true;
+        if (container.getStackInSlot(slot) != ItemStack.EMPTY) {
+            stackCheck = ItemStack.isSameItemSameComponents(container.getStackInSlot(slot), stack);
+        }
+        return stackCheck && container.isItemValid(slot, stack);
+    }
+
+    private Pair<ItemStack, SoundEvent> processInputs(ItemStack stack) {
+        SoundEvent success = null;
+        ItemStack resultStack = ItemStack.EMPTY;
+        int amountForSlot = 0;
+        for (int i = 1; i <= stack.getCount(); i++) {
+            FluidTransfer simulatedResult = FluidHelper.tryInteractWithTank(getBlockEntity().getLevel(), stack, tank, true);
+            if (simulatedResult != null) {
+                FluidTransfer actualResult = FluidHelper.tryInteractWithTank(getBlockEntity().getLevel(), stack, tank, false);
+                if (actualResult != null) {
+                    ItemStack result = actualResult.stack().copyWithCount(1);
+                    if (resultStack.isEmpty()) {
+                        resultStack = result;
+                        amountForSlot = 1;
+                    } else if (!ItemStack.isSameItemSameComponents(resultStack, result)) {
+                        break;
+                    } else {
+                        amountForSlot++;
+                    }
+                    success = actualResult.getSound();
+                }
+            }
+        }
+        return Pair.of(resultStack.copyWithCount(amountForSlot), success);
     }
 }

@@ -10,8 +10,5 @@
   },
   "full": {
     "item": "agrestic:ambrosia_bottle"
-  },
-  "inherited_components": [
-    "agrestic:quality"
-  ]
+  }
 }

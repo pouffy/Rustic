@@ -10,8 +10,5 @@
   },
   "full": {
     "item": "agrestic:sweet_berry_wine_bottle"
-  },
-  "inherited_components": [
-    "agrestic:quality"
-  ]
+  }
 }

@@ -42,7 +42,7 @@ public class ItemEmptying {
             EmptyingRecipe emptyingRecipe = recipe.get();
             ItemStack resultItem = emptyingRecipe.getResultItem(level.registryAccess());
             resultingItem = resultItem.isEmpty() ? ItemStack.EMPTY : resultItem;
-            resultingFluid = emptyingRecipe.getResultingFluid(stack);
+            resultingFluid = emptyingRecipe.getResultingFluid();
             if (!simulate)
                 stack.shrink(1);
             return Pair.of(resultingFluid, resultingItem);

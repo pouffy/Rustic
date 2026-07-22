@@ -5,7 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.pouffydev.krystal_core.KrystalCore;
 import com.pouffydev.krystal_core.foundation.registry.RegistryHelper;
 import io.github.pouffy.agrestic.common.data.EvaporationBoosterManager;
-import io.github.pouffy.agrestic.compat.CompatEventHandler;
+import io.github.pouffy.agrestic.compat.appleskin.AppleskinIntegration;
+import io.github.pouffy.agrestic.core.CompatManager;
 import io.github.pouffy.agrestic.init.*;
 import net.minecraft.Util;
 import net.minecraft.resources.ResourceLocation;
@@ -64,7 +65,13 @@ public class Agrestic {
         modContainer.registerConfig(ModConfig.Type.CLIENT, AgresticConfig.clientSpec);
         modContainer.registerConfig(ModConfig.Type.COMMON, AgresticConfig.commonSpec);
 
-        CompatEventHandler.init(modEventBus, NeoForge.EVENT_BUS);
+        registerIntegration();
+    }
+
+    private void registerIntegration() {
+        if (CompatManager.APPLESKIN.isLoaded()) {
+            NeoForge.EVENT_BUS.register(AppleskinIntegration.class);
+        }
     }
 
     public static IEventBus getEventBus() {

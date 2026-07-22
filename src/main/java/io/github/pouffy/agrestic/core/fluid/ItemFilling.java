@@ -107,7 +107,7 @@ public class ItemFilling {
         Optional<FillingRecipe> recipe = possibleRecipes.stream().filter((r) -> r.getRequiredFluid().test(toFill)).findFirst();
         if (recipe.isPresent()) {
             FillingRecipe fillingRecipe = recipe.get();
-            ItemStack resultItem = fillingRecipe.getResultItem(world.registryAccess(), toFill);
+            ItemStack resultItem = fillingRecipe.getResultItem(world.registryAccess());
             if (!resultItem.isEmpty()) {
                 stack.shrink(1);
                 return resultItem;

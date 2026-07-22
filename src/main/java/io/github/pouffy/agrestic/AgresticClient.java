@@ -1,12 +1,15 @@
 package io.github.pouffy.agrestic;
 
+import io.github.pouffy.agrestic.client.ClientTextHelper;
 import io.github.pouffy.agrestic.client.renderer.FullmetalRenderLayer;
 import io.github.pouffy.agrestic.client.ui.BrewingBarrelScreen;
 import io.github.pouffy.agrestic.common.item.BoozeBottleItem;
 import io.github.pouffy.agrestic.common.item.BoozeItemColor;
+import io.github.pouffy.agrestic.common.recipe.BrewingBarrelRecipe;
 import io.github.pouffy.agrestic.core.fluid.AgresticBucketWrapper;
 import io.github.pouffy.agrestic.core.fluid.AgresticFluidType;
 import io.github.pouffy.agrestic.init.AgresticBlocks;
+import io.github.pouffy.agrestic.init.AgresticDataComponents;
 import io.github.pouffy.agrestic.init.AgresticItems;
 import io.github.pouffy.agrestic.init.AgresticMenuTypes;
 import net.minecraft.client.renderer.BiomeColors;
@@ -96,6 +99,9 @@ public class AgresticClient {
         }
         if (stack.getCapability(Capabilities.FluidHandler.ITEM) instanceof AgresticBucketWrapper wrapper) {
             tooltip.add(Component.translatable("ui.agrestic.tooltip.fluid", wrapper.getFluid().getHoverName(), wrapper.getFluid().getAmount(), 1000));
+        }
+        if (stack.has(AgresticDataComponents.QUALITY)) {
+            tooltip.add(ClientTextHelper.getQualityTooltip(stack.getOrDefault(AgresticDataComponents.QUALITY, BrewingBarrelRecipe.DEFAULT_QUALITY)));
         }
     }
 

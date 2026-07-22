@@ -10,8 +10,5 @@
   "full": {
     "count": 1,
     "id": "agrestic:ale_bottle"
-  },
-  "inherited_components": [
-    "agrestic:quality"
-  ]
+  }
 }

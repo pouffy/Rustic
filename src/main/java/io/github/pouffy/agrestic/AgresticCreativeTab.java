@@ -146,7 +146,8 @@ public class AgresticCreativeTab {
 
     @SubscribeEvent(priority = EventPriority.LOWEST)
     public static void populateExtra(BuildCreativeModeTabContentsEvent event) {
-        generateBooze(event, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
+        if (event.getTabKey() == AGRICULTURE.getKey())
+            generateBooze(event, CreativeModeTab.TabVisibility.PARENT_TAB_ONLY);
     }
 
     private static void generateBooze(CreativeModeTab.Output output, CreativeModeTab.TabVisibility tabVisibility) {

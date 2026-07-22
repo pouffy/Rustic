@@ -24,33 +24,17 @@ public class FillingRecipe extends InWorldRecipe<SingleRecipeInput> {
     @Getter
     protected Ingredient input;
     protected SizedFluidIngredient fluidInput;
-    protected List<Holder<DataComponentType<?>>> inherit;
 
     public static final MapCodec<FillingRecipe> CODEC = RecordCodecBuilder.mapCodec((obj) -> obj.group(
             Ingredient.CODEC.fieldOf("empty").forGetter((recipe) -> recipe.input),
             SizedFluidIngredient.FLAT_CODEC.fieldOf("fluid").forGetter((recipe) -> recipe.fluidInput),
-            ItemStack.CODEC.fieldOf("full").forGetter((recipe) -> recipe.output),
-            BuiltInRegistries.DATA_COMPONENT_TYPE.holderByNameCodec().listOf().optionalFieldOf("inherited_components", List.of()).forGetter((recipe) -> recipe.inherit)
+            ItemStack.CODEC.fieldOf("full").forGetter((recipe) -> recipe.output)
     ).apply(obj, FillingRecipe::new));
 
-    public FillingRecipe(Ingredient input, SizedFluidIngredient fluidInput, ItemStack output, List<Holder<DataComponentType<?>>> inherit) {
+    public FillingRecipe(Ingredient input, SizedFluidIngredient fluidInput, ItemStack output) {
         super(AgresticRecipeTypes.Serializers.FILLING.get(), AgresticRecipeTypes.FILLING.get(), output);
         this.input = input;
         this.fluidInput = fluidInput;
-        this.inherit = inherit;
-    }
-
-    public FillingRecipe(Ingredient input, SizedFluidIngredient fluidInput, ItemStack output) {
-        this(input, fluidInput, output, List.of());
-    }
-
-    public ItemStack getResultItem(HolderLookup.Provider registries, @Nullable FluidStack input) {
-        ItemStack result = output.copy();
-        if (input != null) {
-            DataComponentPatch patch = input.getComponentsPatch().forget((dc -> inherit.stream().map(Holder::value).toList().contains(dc)));
-            result.applyComponents(patch);
-        }
-        return result;
     }
 
     @Override

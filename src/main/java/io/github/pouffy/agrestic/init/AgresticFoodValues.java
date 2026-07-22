@@ -35,8 +35,7 @@ public class AgresticFoodValues {
             .alwaysEdible()
             .build();
 
-    public static FoodProperties ale(BoozeBottleItem.BoozeConsumptionContext context) {
-        float quality = context.quality();
+    public static FoodProperties ale(float quality) {
         if (quality >= 0.5F) {
             float saturation = 4F * quality;
             int duration = 1200 + ((int) (10800 * (Math.max(Math.abs((quality - 0.5F) * 2F), 0F))));
@@ -50,8 +49,7 @@ public class AgresticFoodValues {
         }
     }
 
-    public static FoodProperties cider(BoozeBottleItem.BoozeConsumptionContext context) {
-        float quality = context.quality();
+    public static FoodProperties cider(float quality) {
         if (quality >= 0.5F) {
             float saturation = 2F * quality;
             int duration = 1200 + ((int) (10800 * (Math.max(Math.abs((quality - 0.5F) * 2F), 0F))));
@@ -66,8 +64,7 @@ public class AgresticFoodValues {
         }
     }
 
-    public static FoodProperties ironWine(BoozeBottleItem.BoozeConsumptionContext context) {
-        float quality = context.quality();
+    public static FoodProperties ironWine(float quality) {
         if (quality >= 0.5F) {
             float saturation = 2F * quality;
             return new FoodProperties.Builder().nutrition(1).saturationModifier(saturation).build();
@@ -77,8 +74,7 @@ public class AgresticFoodValues {
         }
     }
 
-    public static FoodProperties mead(BoozeBottleItem.BoozeConsumptionContext context) {
-        float quality = context.quality();
+    public static FoodProperties mead(float quality) {
         if (quality >= 0.5F) {
             float saturation = 2F * quality;
             int duration = 1200 + ((int) (6000 * (Math.max(Math.abs((quality - 0.5F) * 2F), 0F))));
@@ -93,8 +89,7 @@ public class AgresticFoodValues {
         }
     }
 
-    public static FoodProperties sweetBerryWine(BoozeBottleItem.BoozeConsumptionContext context) {
-        float quality = context.quality();
+    public static FoodProperties sweetBerryWine(float quality) {
         if (quality >= 0.5F) {
             float saturation = 2F * quality;
             return new FoodProperties.Builder().nutrition(1).saturationModifier(saturation).build();
@@ -104,8 +99,7 @@ public class AgresticFoodValues {
         }
     }
 
-    public static FoodProperties wine(BoozeBottleItem.BoozeConsumptionContext context) {
-        float quality = context.quality();
+    public static FoodProperties wine(float quality) {
         if (quality >= 0.5F) {
             float saturation = 2F * quality;
             return new FoodProperties.Builder().nutrition(1).saturationModifier(saturation).build();
@@ -115,9 +109,7 @@ public class AgresticFoodValues {
         }
     }
 
-    public static FoodProperties ambrosia(BoozeBottleItem.BoozeConsumptionContext context) {
-        float quality = context.quality();
-        Player player = context.player();
+    public static FoodProperties ambrosia(float quality) {
         if (quality >= 0.5F) {
             float saturation = 2F * quality;
             int duration;
@@ -126,7 +118,6 @@ public class AgresticFoodValues {
             } else {
                 duration = (20 * 300) + ((int) (18000 * (Math.max(Math.abs((quality - 0.5F) * 2F), 0.00F))));
             }
-            player.addEffect(new MobEffectInstance(AgresticEffects.UNDYING, duration, 0, false, false));
             return new FoodProperties.Builder().nutrition(2).saturationModifier(saturation).effect(() -> new MobEffectInstance(AgresticEffects.UNDYING, duration, 0, false, false), 1.0F).build();
         }
         return new FoodProperties.Builder().build();

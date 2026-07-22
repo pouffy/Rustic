@@ -10,8 +10,5 @@
   },
   "full": {
     "item": "agrestic:iron_wine_bottle"
-  },
-  "inherited_components": [
-    "agrestic:quality"
-  ]
+  }
 }
